@@ -2,7 +2,9 @@
   <dictionary name="herrshi">
     <words>
       <w>dropdown</w>
+      <w>fontawesome</w>
       <w>navbar</w>
+      <w>tgis</w>
     </words>
   </dictionary>
 </component>

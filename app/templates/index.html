@@ -1,75 +1,79 @@
 {% extends "base.html" %}
 
-{% block page_content %}
-<div class="inner-bg">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2 text wow fadeInUp">
-                <h1>上海电科智能交通<br><strong>地图开放平台</strong></h1>
-
-                <div class="top-big-link">
-                    <a class="btn btn-link-2" href="{{ url_for('server_home') }}">TGISServer</a>
-                    <a class="btn btn-link-1">TGISViewer-2D</a>
-                    <a class="btn btn-link-1">TGISViewer-3D</a>
-                    <a class="btn btn-link-1">TGISViewer-Lite</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-12 images-slider">
-                <div id="slider-1" class="carousel slide" data-ride="carousel">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators">
-                        <li data-target="#slider-1" data-slide-to="0" class="active"></li>
-                        <li data-target="#slider-1" data-slide-to="1"></li>
-                        <li data-target="#slider-1" data-slide-to="2"></li>
-                        <li data-target="#slider-1" data-slide-to="3"></li>
-                        <li data-target="#slider-1" data-slide-to="4"></li>
-                        <li data-target="#slider-1" data-slide-to="5"></li>
-                    </ol>
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active">
-                            <img src="{{ url_for('.static', filename='assets/img/screenshots/2.png') }}" alt="">
-                            <div class="carousel-caption">
-                                <h3>Overview page</h3>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="{{ url_for('.static', filename='assets/img/screenshots/4.png') }}" alt="">
-                            <div class="carousel-caption">
-                                <h3>Module page</h3>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="{{ url_for('.static', filename='assets/img/screenshots/5.png') }}" alt="">
-                            <div class="carousel-caption">
-                                <h3>Component page</h3>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="{{ url_for('.static', filename='assets/img/screenshots/6.png') }}" alt="">
-                            <div class="carousel-caption">
-                                <h3>Search page</h3>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="{{ url_for('.static', filename='assets/img/screenshots/7.png') }}" alt="">
-                            <div class="carousel-caption">
-                                <h3>Source code tab</h3>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="{{ url_for('.static', filename='assets/img/screenshots/8.png') }}" alt="">
-                            <div class="carousel-caption">
-                                <h3>Documentation coverage page</h3>
-                            </div>
-                        </div>
+{% block navbar %}
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <strong>TGIS</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-7"
+                    aria-controls="navbarSupportedContent-7" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent-7">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Profile</a>
+                    </li>
+                </ul>
+                <form class="form-inline">
+                    <div class="md-form mt-0">
+                        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
                     </div>
-                </div>
+                </form>
             </div>
         </div>
+    </nav>
+
+    <!-- Full Page Intro -->
+    <div class="view"
+         style="background-image: url({{ url_for('.static', filename='assets/img/architecture.jpg') }}); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+        <!-- Mask & flexbox options-->
+        <div class="mask rgba-gradient d-flex justify-content-center align-items-center">
+            <!-- Content -->
+            <div class="container">
+                <!--Grid row-->
+                <div class="row">
+                    <!--Grid column-->
+                    <div class="col-md-6 white-text text-center text-md-left mt-xl-5 mb-5 wow fadeInLeft"
+                         data-wow-delay="0.3s">
+                        <h1 class="h1-responsive font-weight-bold mt-sm-5">Make purchases with our app </h1>
+                        <hr class="hr-light">
+                        <h6 class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem repellendus quasi
+                            fuga nesciunt
+                            dolorum nulla magnam veniam sapiente, fugiat! Commodi sequi non animi ea dolor molestiae
+                            iste.</h6>
+                        <a class="btn btn-white">Download</a>
+                        <a class="btn btn-outline-white">Learn more</a>
+                    </div>
+                    <!--Grid column-->
+                    <!--Grid column-->
+                    <div class="col-md-6 col-xl-5 mt-xl-5 wow fadeInRight" data-wow-delay="0.3s">
+                        <img src="https://mdbootstrap.com/img/Mockups/Transparent/Small/admin-new.png" alt=""
+                             class="img-fluid">
+                    </div>
+                    <!--Grid column-->
+                </div>
+                <!--Grid row-->
+            </div>
+            <!-- Content -->
+        </div>
+        <!-- Mask & flexbox options-->
     </div>
-</div>
+    <!-- Full Page Intro -->
 {% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('.static', filename='assets/css/style-index.css') }}">
+{% endblock %}
+
