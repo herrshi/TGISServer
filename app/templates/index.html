@@ -5,7 +5,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <strong>TGIS</strong>
+                <img src="{{ url_for('.static', filename='assets/img/dk_logo_text.png') }}" height="50">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-7"
                     aria-controls="navbarSupportedContent-7" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,47 +27,145 @@
                 </ul>
                 <form class="form-inline">
                     <div class="md-form mt-0">
-                        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                        <input class="form-control mr-sm-2" type="text" placeholder="搜索..." aria-label="搜索...">
                     </div>
                 </form>
             </div>
         </div>
     </nav>
+    <!--/Navbar-->
 
     <!-- Full Page Intro -->
     <div class="view"
-         style="background-image: url({{ url_for('.static', filename='assets/img/architecture.jpg') }}); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+         style="background-image: url({{ url_for('.static', filename='assets/img/architecture.jpg') }});
+                 background-repeat: no-repeat; background-size: cover; background-position: center center;">
         <!-- Mask & flexbox options-->
         <div class="mask rgba-gradient d-flex justify-content-center align-items-center">
             <!-- Content -->
             <div class="container">
                 <!--Grid row-->
-                <div class="row">
+                <div class="row d-flex justify-content-center">
                     <!--Grid column-->
                     <div class="col-md-6 white-text text-center text-md-left mt-xl-5 mb-5 wow fadeInLeft"
                          data-wow-delay="0.3s">
-                        <h1 class="h1-responsive font-weight-bold mt-sm-5">Make purchases with our app </h1>
+                        <h1 class="h1-responsive font-weight-bold mt-sm-5">TGIS - 智能交通地图开放平台</h1>
                         <hr class="hr-light">
-                        <h6 class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem repellendus quasi
-                            fuga nesciunt
-                            dolorum nulla magnam veniam sapiente, fugiat! Commodi sequi non animi ea dolor molestiae
-                            iste.</h6>
-                        <a class="btn btn-white">Download</a>
-                        <a class="btn btn-outline-white">Learn more</a>
+
                     </div>
-                    <!--Grid column-->
-                    <!--Grid column-->
-                    <div class="col-md-6 col-xl-5 mt-xl-5 wow fadeInRight" data-wow-delay="0.3s">
-                        <img src="https://mdbootstrap.com/img/Mockups/Transparent/Small/admin-new.png" alt=""
-                             class="img-fluid">
-                    </div>
-                    <!--Grid column-->
+                    <!--/Grid column-->
                 </div>
+                <!--/Grid row-->
+
                 <!--Grid row-->
+                <div class="row">
+                    <!--Grid column-->
+                    <div class="col-lg-3 col-md-12 mb-4">
+                        <div class="card card-cascade narrower">
+                            <!-- Card image -->
+                            <div class="view overlay view-cascade gradient-card-header aqua-gradient">
+
+                                <!-- Title -->
+                                <h2 class="card-header-title">TGISServer</h2>
+
+                                <a href="javascript:">
+                                    <div class="mask rgba-white-slight"></div>
+                                </a>
+                            </div>
+
+                            <!-- Card content -->
+                            <div class="card-body card-body-cascade text-center">
+                                <!-- Text -->
+                                <p class="card-text">后台GIS服务，提供量算、路径规划等服务。</p>
+                                <a href="#" class="btn btn-light-green btn-rounded"><i
+                                        class="far fa-arrow-alt-circle-right"></i> 进入</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-3 col-md-4 mb-4">
+                        <div class="card card-cascade narrower">
+                            <!-- Card image -->
+                            <div class="view overlay view-cascade gradient-card-header blue-gradient">
+
+                                <!-- Title -->
+                                <h2 class="card-header-title">TGISViewer</h2>
+                                <h3 class="card-header-title">Standard</h3>
+
+                                <a href="javascript:">
+                                    <div class="mask rgba-white-slight"></div>
+                                </a>
+                            </div>
+
+                            <!-- Card content -->
+                            <div class="card-body card-body-cascade text-center">
+                                <!-- Text -->
+                                <p class="card-text">后台GIS服务，提供量算、路径规划等服务。</p>
+                                <a href="#" class="btn btn-light-blue btn-rounded"><i
+                                        class="far fa-arrow-alt-circle-right"></i> 进入</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-3 col-md-4 mb-4">
+                        <div class="card card-cascade narrower">
+                            <!-- Card image -->
+                            <div class="view overlay view-cascade gradient-card-header blue-gradient">
+
+                                <!-- Title -->
+                                <h2 class="card-header-title">TGISViewer</h2>
+                                <h3 class="card-header-title font-weight-light">Lite</h3>
+
+                                <a href="javascript:">
+                                    <div class="mask rgba-white-slight"></div>
+                                </a>
+                            </div>
+
+                            <!-- Card content -->
+                            <div class="card-body card-body-cascade text-center">
+                                <!-- Text -->
+                                <p class="card-text">后台GIS服务，提供量算、路径规划等服务。</p>
+                                <a href="#" class="btn btn-light-blue btn-rounded"><i
+                                        class="far fa-arrow-alt-circle-right"></i> 进入</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-3 col-md-4 mb-4">
+                        <div class="card card-cascade narrower">
+                            <!-- Card image -->
+                            <div class="view overlay view-cascade gradient-card-header blue-gradient">
+
+                                <!-- Title -->
+                                <h2 class="card-header-title">TGISViewer</h2>
+                                <h3 class="card-header-title font-italic">3D</h3>
+
+                                <a href="javascript:">
+                                    <div class="mask rgba-white-slight"></div>
+                                </a>
+                            </div>
+
+                            <!-- Card content -->
+                            <div class="card-body card-body-cascade text-center">
+                                <!-- Text -->
+                                <p class="card-text">后台GIS服务，提供量算、路径规划等服务。</p>
+                                <a href="#" class="btn btn-light-blue btn-rounded"><i
+                                        class="far fa-arrow-alt-circle-right"></i> 进入</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/Grid column-->
+                </div>
+                <!--/Grid row-->
             </div>
-            <!-- Content -->
+            <!--/Content-->
         </div>
-        <!-- Mask & flexbox options-->
+        <!--/Mask & flexbox options-->
     </div>
     <!-- Full Page Intro -->
 {% endblock %}

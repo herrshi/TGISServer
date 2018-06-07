@@ -94,7 +94,7 @@
 
           // Check for multiple type.
           if (type === 'multiple') {
-            options.append($('<li class="' + disabledClass + '"><img alt="" src="' + icon_url + '"' + classString + '><span class="filtrable"><input type="checkbox"' + disabledClass + '/><label></label>' + option.html() + '</span></li>'));
+            options.append($('<li class="' + disabledClass + '"><img alt="" src="' + icon_url + '"' + classString + '><span class="filtrable"><input class="form-check-input" type="checkbox"' + disabledClass + '/><label></label>' + option.html() + '</span></li>'));
           } else {
             options.append($('<li class="' + disabledClass + optgroupClass + '"><img alt="" src="' + icon_url + '"' + classString + '><span class="filtrable">' + option.html() + '</span></li>'));
           }
@@ -103,7 +103,7 @@
 
         // Check for multiple type.
         if (type === 'multiple') {
-          options.append($('<li class="' + disabledClass + '"><span class="filtrable"><input type="checkbox"' + disabledClass + '/><label></label>' + option.html() + '</span></li>'));
+          options.append($('<li class="' + disabledClass + '"><span class="filtrable"><input class="form-check-input" type="checkbox"' + disabledClass + '/><label></label>' + option.html() + '</span></li>'));
         } else {
           options.append($('<li class="' + disabledClass + optgroupClass + '"><span class="filtrable">' + option.html() + '</span></li>'));
         }
