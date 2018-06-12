@@ -10,7 +10,7 @@ def index():
 
 @app.route('/TGISServer')
 def server_home():
-    return render_template('ServerHome.html')
+    return render_template('server_home.html')
 
 
 @app.route('/hello')
