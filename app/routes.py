@@ -13,6 +13,6 @@ def server_home():
     return render_template('server/server_home.html')
 
 
-@app.route('/TGISServer/GeometryServer/')
-def geometry_server():
-    return render_template('server/geometry_server.html')
+@app.route('/TGISServer/GeometryService/')
+def geometry_service():
+    return render_template('server/geometry_service.html')
