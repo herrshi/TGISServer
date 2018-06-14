@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block html_attribs %} class="fixed-sn mdb-skin"{% endblock %}
+{% block html_attribs %} class="fixed-sn light-blue-skin"{% endblock %}
 
 {% block navbar %}
     <!--Navbar-->
@@ -13,7 +13,7 @@
         </div>
 
         <div class="breadcrumb-dn mr-auto">
-            <h2 class="pl-5 font-weight-bold">TGIS — 智能交通开放GIS平台</h2>
+            <h2 class="pl-5 font-weight-bold">TGIS — 智能交通地图开放平台</h2>
         </div>
 
         <!-- Links -->
@@ -75,10 +75,10 @@
                         <div class="collapsible-body">
                             <ul>
                                 <li>
-                                    <a href="{{ url_for('geometry_service') }}" class="waves-effect">地理服务</a>
+                                    <a href="{{ url_for('geometry_service') }}" class="waves-effect">几何服务</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="waves-effect">网络分析</a>
+                                    <a href="#" class="waves-effect">网络分析服务</a>
                                 </li>
                             </ul>
                         </div>
