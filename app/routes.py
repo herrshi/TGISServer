@@ -10,14 +10,9 @@ def index():
 
 @app.route('/TGISServer')
 def server_home():
-    return render_template('server_home.html')
+    return render_template('server/server_home.html')
 
 
-@app.route('/hello')
-def hello():
-    return render_template('hello.html')
-
-
-@app.route('/TGISServer/GeometryServer/length')
-def length():
-    points_param = request.args.get('points')
+@app.route('/TGISServer/GeometryService/')
+def geometry_service():
+    return render_template('server/geometry_service.html')

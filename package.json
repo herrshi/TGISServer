@@ -1,0 +1,19 @@
+{
+  "name": "tgisserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/herrshi/TGISServer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/herrshi/TGISServer/issues"
+  },
+  "homepage": "https://github.com/herrshi/TGISServer#readme"
+}

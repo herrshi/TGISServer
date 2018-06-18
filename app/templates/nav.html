@@ -13,7 +13,7 @@
         </div>
 
         <div class="breadcrumb-dn mr-auto">
-            <h2 class="pl-5 font-weight-bold">TGIS — 智能交通开放GIS平台</h2>
+            <h2 class="pl-5 font-weight-bold">TGIS — 智能交通地图开放平台</h2>
         </div>
 
         <!-- Links -->
@@ -41,7 +41,7 @@
     <!--/Navbar-->
 
     <!--Sidebar navigation-->
-    <div id="slide-out" class="side-nav fixed sn-bg-3">
+    <div id="slide-out" class="side-nav fixed sn-bg-4">
         <ul class="custom-scrollbar list-unstyled">
             <!--logo-->
             <li>
@@ -75,10 +75,10 @@
                         <div class="collapsible-body">
                             <ul>
                                 <li>
-                                    <a href="#" class="waves-effect">地理服务</a>
+                                    <a href="{{ url_for('geometry_service') }}" class="waves-effect">几何服务</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="waves-effect">网络分析</a>
+                                    <a href="#" class="waves-effect">网络分析服务</a>
                                 </li>
                             </ul>
                         </div>
@@ -165,4 +165,9 @@
         <!--/Copyright-->
     </footer>
     <!--/Footer-->
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('.static', filename='assets/js/scripts.js') }}"></script>
 {% endblock %}
