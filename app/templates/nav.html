@@ -68,17 +68,17 @@
                 <ul class="collapsible collapsible-accordion">
                     <!--TGIS Server-->
                     <li>
-                        <a class="collapsible-header waves-effect arrow-r">
+                        <a id="menu-server" class="collapsible-header waves-effect arrow-r">
                             TGISServer
                             <i class="fa fa-angle-down rotate-icon"></i>
                         </a>
                         <div class="collapsible-body">
                             <ul>
                                 <li>
-                                    <a href="{{ url_for('geometry_service') }}" class="waves-effect">几何服务</a>
+                                    <a id="menu-item-geometry-service" href="{{ url_for('geometry_service') }}" class="waves-effect">几何服务</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="waves-effect">网络分析服务</a>
+                                    <a id="menu-item-network-analyse" href="#" class="waves-effect">网络分析服务</a>
                                 </li>
                             </ul>
                         </div>
@@ -149,7 +149,7 @@
 
 {% block content %}
     <main>
-        <div class="container">
+        <div class="container-fluid">
             {% block main %}{% endblock %}
         </div>
     </main>

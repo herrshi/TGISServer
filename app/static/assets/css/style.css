@@ -11,10 +11,14 @@ body {
   height: 38px;
 }
 
-.side-nav .search-form input[type=text] {
+.side-nav .search-form input[type="text"] {
   margin-top: 0;
   border-top: 1px solid rgba(255, 255, 255, 0.3);
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.side-nav .current-menu-item {
+  color: #aadeff !important;
 }
 
 .accordion .card {
@@ -24,4 +28,10 @@ body {
 
 .accordion .card .card-body {
   border-top: 1px solid #eee;
+}
+
+.panel {
+  background-color: #f8f8f8;
+  border: 1px solid #efefef;
+  padding: 0.99rem;
 }

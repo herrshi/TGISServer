@@ -2,17 +2,17 @@
 
 {% block title %}TGIS - 智能交通地图开放平台{% endblock %}
 
-
-
 {% block styles %}
     {{ super() }}
-{#    <link rel="stylesheet" href="{{ url_for('.static', filename='assets/css/style.css') }}">#}
+    <link rel="stylesheet" href="{{ url_for('.static', filename='assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('.static', filename='assets/css/mdb.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('.static', filename='assets/fontawesome/css/fontawesome-all.min.css') }}">
+    <link rel="stylesheet" href="https://js.arcgis.com/4.7/esri/css/main.css">
 {% endblock %}
 
 {% block scripts %}
     {{ super() }}
     <script src="{{ url_for('.static', filename='assets/js/popper.min.js') }}"></script>
     <script src="{{ url_for('.static', filename='assets/js/mdb.min.js') }}"></script>
+    <script src="https://js.arcgis.com/4.7/"></script>
 {% endblock %}
