@@ -35,3 +35,15 @@ body {
   border: 1px solid #efefef;
   padding: 0.99rem;
 }
+
+.user-text {
+  background-color: #f8f8f8;
+  border: 1px solid #efefef;
+  border-radius: 3px;
+  color: #595959;
+  font-family: "Consolas", "Andale Mono", "Lucida Console", "Monaco",
+    "Courier New", Courier, monospace;
+  font-size: 1em;
+  padding: 0 0.15rem;
+  white-space: normal;
+}
