@@ -151,40 +151,11 @@
 
 {% block scripts %}
     {{ super() }}
+
     <script type="text/javascript">
         $('#menu-server').addClass('active');
         $('#menu-item-geometry-service').addClass('current-menu-item');
     </script>
 
-    <script type="text/javascript">
-        require([
-            "esri/Map",
-            "esri/views/MapView",
-            "esri/config",
-            "dojo/domReady!"
-        ], function (Map, MapView, esriConfig) {
-            esriConfig.request.proxyUrl = "http://localhost:8090/proxy/proxy.jsp";
-            {#esriConfig.request.proxyRules = [#}
-            {#    {#}
-            {#        proxyUrl: "http://localhost:8090/proxy/proxy.jsp",#}
-            {#        urlPrefix: "http://localhost:8090/arcgis_js_api/library"#}
-            {#    }#}
-            {#];#}
-            {#esriConfig.request.corsEnabledServers.push("localhost:8090");#}
-            {##}
-            {#console.log(esriConfig.request.proxyUrl);#}
-            {#console.log(esriConfig.request.corsEnabledServers);#}
-
-            const map = new Map({
-                basemap: "streets"
-            });
-
-            let view = new MapView({
-                container: "mapViewDiv",  // Reference to the DOM node that will contain the view
-                map: map,               // References the map object created in step 3
-                zoom: 4,  // Sets zoom level based on level of detail (LOD)
-                center: [15, 65]  // Sets center point of view using longitude,latitude
-            });
-        });
-    </script>
+    <script src="{{ url_for('.static', filename='assets/js/server/geometry_service_lengths.js') }}"></script>
 {% endblock %}
