@@ -1,161 +1,202 @@
 {% extends "nav.html" %}
 
 {% block main %}
-    <h4 class="font-weight-bold">量算-线</h4>
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs nav-justified indigo" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#panel-API" role="tab">API</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#panel-sample" role="tab">实例</a>
-        </li>
-    </ul>
-    <!-- Tab panels -->
-    <div class="tab-content">
-        <!--API Panel-->
-        <div class="tab-pane fade in show active" id="panel-API" role="tabpanel">
+  <h4 class="font-weight-bold">量算-线</h4>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs nav-justified indigo" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#panel-API" role="tab">API</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#panel-sample" role="tab">实例</a>
+    </li>
+  </ul>
+  <!-- Tab panels -->
+  <div class="tab-content">
+    <!--API Panel-->
+    <div class="tab-pane fade in show active" id="panel-API" role="tabpanel">
+      <div class="card-body">
+        <section class="my-2">
+          <div class="card">
             <div class="card-body">
-                <section class="my-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-3">URL:</div>
-                                <div class="col-9">{{ url_for('geometry_service_lengths') }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+              <div class="row">
+                <div class="col-3">URL:</div>
+                <div class="col-9">{{ url_for('geometry_service_lengths') }}</div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-                <!--description-->
-                <section class="my-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <p>此操作计算输入数组中指定的每条折线的二维欧几里得长度或测地线长度。</p>
-                            <p>此操作的参数在以下参数表中定义:</p>
-                        </div>
-                    </div>
-                </section>
+        <!--description-->
+        <section class="my-2">
+          <div class="card">
+            <div class="card-body">
+              <p>此操作计算输入数组中指定的每条折线的二维欧几里得长度或测地线长度。</p>
+              <p>此操作的参数在以下参数表中定义:</p>
+            </div>
+          </div>
+        </section>
 
-                <!--params-->
-                <section class="my-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <!--Table-->
-                            <table class="table">
+        <!--params-->
+        <section class="my-2">
+          <div class="card">
+            <div class="card-body">
+              <!--Table-->
+              <table class="table">
 
-                                <!--Table head-->
-                                <thead class="blue-grey lighten-4">
-                                <tr>
-                                    <th class="h4">参数</th>
-                                    <th class="h4">说明</th>
-                                </tr>
-                                </thead>
-                                <!--/Table head-->
+                <!--Table head-->
+                <thead class="blue-grey lighten-4">
+                <tr>
+                  <th class="h4">参数</th>
+                  <th class="h4">说明</th>
+                </tr>
+                </thead>
+                <!--/Table head-->
 
-                                <!--Table body-->
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <span class="user-text">polylines</span>
-                                    </td>
-                                    <td class="blockquote pt-0">
-                                        <p>要计算长度的折线数组</p>
-                                        <p>JSON结构：</p>
-                                        <section class="panel">
-                                            <pre><code>[ &lt;polyline1&gt;, &lt;polyline2&gt;, ..., &lt;polylineN&gt; ]</code></pre>
-                                        </section>
-                                        <p>示例：</p>
-                                        <section class="panel">
+                <!--Table body-->
+                <tbody>
+                <tr>
+                  <td>
+                    <span class="user-text">polylines</span>
+                  </td>
+                  <td class="blockquote pt-0">
+                    <p>要计算长度的折线数组</p>
+                    <p>JSON结构：</p>
+                    <section class="panel">
+                      <pre><code>[ &lt;polyline1&gt;, &lt;polyline2&gt;, ..., &lt;polylineN&gt; ]</code></pre>
+                    </section>
+                    <p>示例：</p>
+                    <section class="panel">
                                             <pre><code>[
  {
   <span class="red-text">"paths"</span> : [
-   [[<span class="blue-text">-117</span>,<span class="blue-text">34</span>],[<span class="blue-text">-116</span>,<span class="blue-text">34</span>],[<span class="blue-text">-117</span>,<span class="blue-text">33</span>]],
-   [[<span class="blue-text">-115</span>,<span class="blue-text">44</span>],[<span class="blue-text">-114</span>,<span class="blue-text">43</span>],[<span class="blue-text">-115</span>,<span class="blue-text">43</span>]]
+   [[<span class="blue-text">-117</span>,<span class="blue-text">34</span>],[<span class="blue-text">-116</span>,<span
+                                                class="blue-text">34</span>],[<span class="blue-text">-117</span>,<span
+                                                class="blue-text">33</span>]],
+   [[<span class="blue-text">-115</span>,<span class="blue-text">44</span>],[<span class="blue-text">-114</span>,<span
+                                                class="blue-text">43</span>],[<span class="blue-text">-115</span>,<span
+                                                class="blue-text">43</span>]]
   ]
  },
  {
   <span class="red-text">"paths"</span> : [
-   [[<span class="blue-text">32.49</span>,<span class="blue-text">17.83</span>],[<span class="blue-text">31.96</span>,<span class="blue-text">17.59</span>],[<span class="blue-text">30.87</span>,<span class="blue-text">17.01</span>],[<span class="blue-text">30.11</span>,<span class="blue-text">16.86</span>]]
+   [[<span class="blue-text">32.49</span>,<span class="blue-text">17.83</span>],[<span
+                                                class="blue-text">31.96</span>,<span
+                                                class="blue-text">17.59</span>],[<span
+                                                class="blue-text">30.87</span>,<span
+                                                class="blue-text">17.01</span>],[<span
+                                                class="blue-text">30.11</span>,<span class="blue-text">16.86</span>]]
   ]
  }
 ]</code></pre>
-                                        </section>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="user-text">calculationType</span>
-                                    </td>
-                                    <td class="blockquote pt-0">
-                                        <p>
-                                            <span class="user-text">calculationType</span>定义了几何体的长度计算方式。该类型可以是以下值之一：
-                                        </p>
-                                        <ul>
-                                            <li class="pb-3">
-                                                <span class="user-text">planar</span> — 平面。平面量算使用二维笛卡尔数学方法计算面积和长度。多数情况下，使用大地测量或保持形状方式将更为精确。
-                                            </li>
-                                            <li class="pb-3">
-                                                <span class="user-text">geodesic</span> - 大地测量。在大地测量计算中，多边形（或多义线）的每对节点之间的线段被当做是地球表面最短的路径。如果没有为面积或长度定义单位，则结果将以米作为单位。如果用户想知道某个几何图形的大地测量长度或面积，则可以使用本类型。如果用户想计算绘制在地图上的几何图形长度或面积，请使用PreserveShape。
-                                            </li>
-                                            <li class="pb-3">
-                                                <span class="user-text">preserveShape</span> - 保持形状。在保持形状的计算中，多边形（或多义线）的面积和长度将在地球椭球体的表面进行计算。几何体的图形在其坐标系下保持不变。这意味着将忽略地图的坐标系（地理或投影），绘制在地图上的几何体的形状在计算长度和面积时始终保持不变。例如，如果你在平面的世界地图上绘制一条长线，大地测量方法将给出两个端点之间沿地球表面的最短路径的长度，而PreserveShape方法将给出沿着你实际绘制的线的距离（即使可能不是两端点间的最短距离）。
-                                            </li>
-                                        </ul>
-                                    </td>
-                                </tr>
-                                </tbody>
-                                <!--Table body-->
+                    </section>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="user-text">calculationType</span>
+                  </td>
+                  <td class="blockquote pt-0">
+                    <p>
+                      <span class="user-text">calculationType</span>定义了几何体的长度计算方式。该类型可以是以下值之一：
+                    </p>
+                    <ul>
+                      <li class="pb-3">
+                        <span class="user-text">planar</span> — 平面。平面量算使用二维笛卡尔数学方法计算面积和长度。多数情况下，使用大地测量或保持形状方式将更为精确。
+                      </li>
+                      <li class="pb-3">
+                        <span class="user-text">geodesic</span> -
+                        大地测量。在大地测量计算中，多边形（或多义线）的每对节点之间的线段被当做是地球表面最短的路径。如果没有为面积或长度定义单位，则结果将以米作为单位。如果用户想知道某个几何图形的大地测量长度或面积，则可以使用本类型。如果用户想计算绘制在地图上的几何图形长度或面积，请使用PreserveShape。
+                      </li>
+                      <li class="pb-3">
+                        <span class="user-text">preserveShape</span> -
+                        保持形状。在保持形状的计算中，多边形（或多义线）的面积和长度将在地球椭球体的表面进行计算。几何体的图形在其坐标系下保持不变。这意味着将忽略地图的坐标系（地理或投影），绘制在地图上的几何体的形状在计算长度和面积时始终保持不变。例如，如果你在平面的世界地图上绘制一条长线，大地测量方法将给出两个端点之间沿地球表面的最短路径的长度，而PreserveShape方法将给出沿着你实际绘制的线的距离（即使可能不是两端点间的最短距离）。
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+                </tbody>
+                <!--Table body-->
 
-                            </table>
-                            <!--Table-->
-                        </div>
-                    </div>
-                </section>
+              </table>
+              <!--Table-->
+            </div>
+          </div>
+        </section>
 
-                <!--response syntax-->
-                <section class="my-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">JSON响应语法</h4>
-                            <pre><code>{
+        <!--response syntax-->
+        <section class="my-2">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">JSON响应语法</h4>
+              <pre><code>{
 <span class="red-text">"lengths"</span> : [ &lt;length1&gt;, &lt;length2&gt;, ..., &lt;lengthN&gt; ]
 }</code></pre>
-                        </div>
-                    </div>
-                </section>
             </div>
-        </div>
-        <!--/API Panel-->
-
-        <!--Sample Panel-->
-        <div class="tab-pane fade" id="panel-sample" role="tabpanel">
-            <div class="card-body">
-                <div class="row" style="height: 500px">
-                    <!--Map div-->
-                    <div class="col-lg card py-3 px-3 mr-0 mr-lg-3 mb-3 mb-lg-0">
-                        <div id="mapViewDiv" class="card-body"></div>
-                    </div>
-
-                    <!--Other div-->
-                    <div class="col-lg card">
-                        <div class="card-body"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--/Sample Panel-->
-
+          </div>
+        </section>
+      </div>
     </div>
+    <!--/API Panel-->
+
+    <!--Sample Panel-->
+    <div class="tab-pane fade" id="panel-sample" role="tabpanel">
+      <div class="card-body">
+        <div class="row" style="height: 500px">
+          <!--Map div-->
+          <div class="col-lg card py-3 px-3 mr-0 mr-lg-3 mb-3 mb-lg-0">
+            <div id="mapViewDiv" class="card-body"></div>
+          </div>
+
+          <!--Other div-->
+          <div class="col-lg card">
+            <div class="card-body">
+              <form>
+                <!--polylines-->
+                <div class="md-form">
+                  <textarea type="text" id="text-polylines" class="md-textarea form-control" rows="4"></textarea>
+
+{#                  <input type="text" class="form-control" id="text-polylines" placeholder="输入坐标或在地图上点击">#}
+                  <label class="font-weight-bold user-text" for="text-polylines">polylines</label>
+                </div>
+
+                <!--calculationType-->
+                <div class="md-form">
+                  <select id="select-calculation-type" class="mdb-select colorful-select dropdown-primary">
+                    <option value="planar">planar</option>
+                    <option value="geodesic">geodesic</option>
+                    <option value="preserveShape">preserveShape</option>
+                  </select>
+                  <label class="font-weight-bold user-text" for="select-calculation-type">calculationType</label>
+                </div>
+
+                <div class="text-center">
+                  <button class="btn btn-primary">计算</button>
+                  <button class="btn btn-info">清除</button>
+                </div>
+
+                <div class="md-form">
+                  <textarea type="text" id="text-results" class="md-textarea form-control" rows="2" readonly></textarea>
+                  <label for="text-results">计算结果</label>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/Sample Panel-->
+
+  </div>
 {% endblock %}
 
 {% block scripts %}
-    {{ super() }}
+  {{ super() }}
 
-    <script type="text/javascript">
-        $('#menu-server').addClass('active');
-        $('#menu-item-geometry-service').addClass('current-menu-item');
-    </script>
+  <script type="text/javascript">
+    $('#menu-server').addClass('active');
+    $('#menu-item-geometry-service').addClass('current-menu-item');
+  </script>
 
-    <script src="{{ url_for('.static', filename='assets/js/server/geometry_service_lengths.js') }}"></script>
+  <script src="{{ url_for('.static', filename='assets/js/server/geometry_service_lengths.js') }}"></script>
 {% endblock %}
