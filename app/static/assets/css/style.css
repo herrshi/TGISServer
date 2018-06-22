@@ -47,3 +47,16 @@ body {
   padding: 0 0.15rem;
   white-space: normal;
 }
+
+.shadow-textarea textarea.form-control::placeholder {
+  font-weight: 300;
+}
+.shadow-textarea textarea.form-control {
+  padding-left: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.md-form label, .md-form label.active {
+  top: 0;
+  font-size: 1rem !important;
+}

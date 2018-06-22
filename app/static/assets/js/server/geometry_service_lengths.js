@@ -2,12 +2,12 @@ require([
   "esri/config",
   "esri/Map",
   "esri/views/MapView",
+  "esri/views/2d/draw/Draw",
   "esri/Basemap",
   "esri/Graphic",
+  "esri/geometry/Polyline",
   "esri/layers/TileLayer",
   "esri/layers/GraphicsLayer",
-  "esri/widgets/CoordinateConversion",
-  "esri/widgets/Sketch/SketchViewModel",
   "esri/widgets/Home",
   "esri/geometry/support/webMercatorUtils",
   "dojo/domReady!"
@@ -15,12 +15,12 @@ require([
   esriConfig,
   Map,
   MapView,
+  Draw,
   Basemap,
   Graphic,
+  Polyline,
   TileLayer,
   GraphicsLayer,
-  CoordinateConversion,
-  SketchViewModel,
   Home,
   webMercatorUtils
 ) {
@@ -57,99 +57,70 @@ require([
   });
   view.ui.add(homeWidget, "top-left");
 
-  // const ccWidget = new CoordinateConversion({
-  //   view: view
-  // });
-  //
-  // view.ui.add(ccWidget, "bottom-left");
-
-  const pointSymbol = {
-    type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
-    style: "circle",
-    color: "#8A2BE2",
-    size: "16px",
-    outline: {
-      // autocasts as new SimpleLineSymbol()
-      color: [255, 255, 255],
-      width: 2 // points
-    }
-  };
-  const polylineSymbol = {
-    type: "simple-line", // autocasts as new SimpleLineSymbol()
-    color: "#8A2BE2",
-    width: "2",
-    style: "solid"
-  };
-  const polygonSymbol = {
-    type: "simple-fill", // autocasts as new SimpleFillSymbol()
-    color: "rgba(138,43,226, 0.8)",
-    style: "solid",
-    outline: {
-      color: "white",
-      width: 1
-    }
-  };
-
-  let sketchViewModel;
+  let draw;
   view.when(function() {
-    // create a new sketch view model
-    sketchViewModel = new SketchViewModel({
-      view: view,
-      layer: drawLayer,
-      pointSymbol: pointSymbol,
-      polylineSymbol: polylineSymbol,
-      polygonSymbol: polygonSymbol
+    draw = new Draw({
+      view: view
     });
-
-    sketchViewModel.on("draw-complete", addGraphic);
-    // sketchViewModel.on("update-complete", addGraphic);
-    // sketchViewModel.on("update-cancel", addGraphic);
-
-    sketchViewModel.create("polyline");
+    enableCreatePolyline();
   });
 
+  function enableCreatePolyline() {
+    const action = draw.create("polyline", {
+      mode: "click"
+    });
+    action.on("vertex-add", addGraphic);
+    action.on("vertex-remove", addGraphic);
+    action.on("cursor-update", addGraphic);
+    action.on("draw-complete", addGraphic);
+  }
+
   function addGraphic(evt) {
-    const geometry = evt.geometry;
-    let symbol;
+    const vertices = evt.vertices;
+    view.graphics.removeAll();
 
-    // Choose a valid symbol based on return geometry
-    switch (geometry.type) {
-      case "point":
-        symbol = pointSymbol;
-        break;
-      case "polyline":
-        symbol = polylineSymbol;
-        break;
-      default:
-        symbol = polygonSymbol;
-        break;
-    }
-    // Create a new graphic; add it to the GraphicsLayer
     const graphic = new Graphic({
-      geometry: geometry,
-      symbol: symbol
-    });
-    drawLayer.add(graphic);
-
-    //将当前显示的graphic转换为polylines参数格式
-    //[<polyline1>, <polyline2>, ..., <polylineN>]
-    let polylines = drawLayer.graphics.map(graphic => {
-      let polyline = graphic.geometry;
-      if (view.spatialReference.isWebMercator) {
-        polyline = webMercatorUtils.webMercatorToGeographic(polyline);
+      geometry: new Polyline({
+        paths: vertices,
+        spatialReference: view.spatialReference
+      }),
+      symbol: {
+        type: "simple-line", // autocasts as new SimpleFillSymbol
+        color: [4, 90, 141],
+        width: 4,
+        cap: "round",
+        join: "round"
       }
-      let jsonObj = polyline.toJSON();
-      delete jsonObj.spatialReference;
-      //坐标保留6位小数，更美观
-      jsonObj.paths.forEach(path => {
-        path.forEach(point => {
-          point[0] = Number(point[0]).toFixed(6);
-          point[1] = Number(point[1]).toFixed(6);
-        });
-      });
-      return jsonObj;
     });
 
-    $("#text-polylines").val(JSON.stringify(polylines));
+    if (evt.type === "draw-complete") {
+      drawLayer.add(graphic);
+      //将当前显示的graphic转换为polylines参数格式
+      //[<polyline1>, <polyline2>, ..., <polylineN>]
+      let polylines = drawLayer.graphics.map(graphic => {
+        let polyline = graphic.geometry;
+        if (view.spatialReference.isWebMercator) {
+          polyline = webMercatorUtils.webMercatorToGeographic(polyline);
+        }
+        let jsonObj = polyline.toJSON();
+        delete jsonObj.spatialReference;
+        //坐标保留6位小数，更美观
+        jsonObj.paths.forEach(path => {
+          path.forEach(point => {
+            point[0] = Number(point[0]).toFixed(6);
+            point[1] = Number(point[1]).toFixed(6);
+          });
+        });
+        return jsonObj;
+      });
+
+      $("#text-polylines").val(JSON.stringify(polylines));
+
+      //继续画下一条线
+      enableCreatePolyline();
+    } else {
+      view.graphics.add(graphic);
+    }
+
   }
 });

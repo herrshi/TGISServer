@@ -153,21 +153,19 @@
             <div class="card-body">
               <form>
                 <!--polylines-->
-                <div class="md-form">
-                  <textarea type="text" id="text-polylines" class="md-textarea form-control" rows="4"></textarea>
-
-{#                  <input type="text" class="form-control" id="text-polylines" placeholder="输入坐标或在地图上点击">#}
-                  <label class="font-weight-bold user-text" for="text-polylines">polylines</label>
+                <div class="md-form shadow-textarea">
+                  <label for="text-polylines">polylines:</label>
+                  <textarea type="text" id="text-polylines" class="form-control" rows="4" placeholder="请输入参数或在地图上点击"></textarea>
                 </div>
 
                 <!--calculationType-->
-                <div class="md-form">
+                <div class="md-form shadow-textarea">
                   <select id="select-calculation-type" class="mdb-select colorful-select dropdown-primary">
-                    <option value="planar">planar</option>
-                    <option value="geodesic">geodesic</option>
-                    <option value="preserveShape">preserveShape</option>
+                    <option value="planar">planar - 平面</option>
+                    <option value="geodesic">geodesic - 大地测量</option>
+                    <option value="preserveShape">preserveShape - 保持形状</option>
                   </select>
-                  <label class="font-weight-bold user-text" for="select-calculation-type">calculationType</label>
+                  <label for="select-calculation-type">calculationType:</label>
                 </div>
 
                 <div class="text-center">
@@ -175,9 +173,9 @@
                   <button class="btn btn-info">清除</button>
                 </div>
 
-                <div class="md-form">
-                  <textarea type="text" id="text-results" class="md-textarea form-control" rows="2" readonly></textarea>
-                  <label for="text-results">计算结果</label>
+                <div class="md-form shadow-textarea">
+                  <label for="text-results">计算结果:</label>
+                  <textarea type="text" id="text-results" class="form-control" rows="2"></textarea>
                 </div>
               </form>
             </div>
