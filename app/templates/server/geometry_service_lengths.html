@@ -1,10 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "nav.html" %}
+
+{% block main %}
+    <!--Accordion wrapper-->
+    <div class="accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+
+        <!-- Accordion card -->
+        <div class="card">
+
+            <!-- Card header -->
+            <div class="card-header" role="tab" id="headingOne">
+                <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne" aria-expanded="true"
+                   aria-controls="collapseOne">
+                    <h5 class="mb-0">
+                        API <i class="fa fa-angle-down rotate-icon"></i>
+                    </h5>
+                </a>
+            </div>
+
+            <!-- Card body -->
+            <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne"
+                 data-parent="#accordionEx">
+                <div class="card-body">
+                    <h2>量算-线</h2>
+
+                    <div class="card card-body">
+                        <h4 class="card-title">Panel title</h4>
+                        <p class="card-text">Some quick example text to build on the panel title and make up the bulk of
+                            the panel's content.</p>
+                        <div class="flex-row">
+                            <a class="card-link">Card link</a>
+                            <a class="card-link">Another link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Accordion card -->
+
+        <!-- Accordion card -->
+        <div class="card">
+
+            <!-- Card header -->
+            <div class="card-header" role="tab" id="headingTwo">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseTwo"
+                   aria-expanded="false" aria-controls="collapseTwo">
+                    <h5 class="mb-0">
+                        实例 <i class="fa fa-angle-down rotate-icon"></i>
+                    </h5>
+                </a>
+            </div>
+
+            <!-- Card body -->
+            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo"
+                 data-parent="#accordionEx">
+                <div class="card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
+                    wolf moon officia aute,
+                    non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch
+                    3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
+                    shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
+                    sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
+                    farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them
+                    accusamus labore sustainable VHS.
+                </div>
+            </div>
+        </div>
+        <!-- Accordion card -->
+    </div>
+    <!--/.Accordion wrapper-->
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+        $("#menu-TGISServer").addClass("active");
+        $("#menu-item-geometry-service").addClass("current-menu-item");
+    </script>
+{% endblock %}

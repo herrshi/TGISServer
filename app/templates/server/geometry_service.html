@@ -23,7 +23,7 @@
                     <!-- Grid column -->
                     <div class="col-lg-10 col-md-9 col-10">
                         <h4 class="font-weight-bold">量算-面</h4>
-                        <p class="grey-text">计算输入数组中指定的每个多边形的面积和周长。</p>
+                        <p>计算输入数组中指定的每个多边形的面积和周长。</p>
                         <a class="btn btn-blue btn-sm"><i class="fas fa-sign-in-alt fa-2x"></i></a>
                     </div>
                     <!-- /Grid column -->
@@ -45,8 +45,10 @@
                     <!-- Grid column -->
                     <div class="col-lg-10 col-md-9 col-10">
                         <h4 class="font-weight-bold">量算-线</h4>
-                        <p class="grey-text">计算输入数组中指定的每条折线的长度。</p>
-                        <a class="btn btn-pink btn-sm"><i class="fas fa-sign-in-alt fa-2x"></i></a>
+                        <p>计算输入数组中指定的每条折线的长度。</p>
+                        <a class="btn btn-pink btn-sm" href="{{ url_for('geometry_service_lengths') }}">
+                            <i class="fas fa-sign-in-alt fa-2x"></i>
+                        </a>
                     </div>
                     <!-- /Grid column -->
                 </div>
@@ -67,7 +69,7 @@
                     <!-- Grid column -->
                     <div class="col-lg-10 col-md-9 col-10">
                         <h4 class="font-weight-bold">缓冲</h4>
-                        <p class="grey-text">为输入几何图形返回指定距离处的缓冲多边形。</p>
+                        <p>为输入几何图形返回指定距离处的缓冲多边形。</p>
                         <a class="btn btn-purple btn-sm"><i class="fas fa-sign-in-alt fa-2x"></i></a>
                     </div>
                     <!-- /Grid column -->
@@ -93,7 +95,7 @@
                     <!-- Grid column -->
                     <div class="col-lg-10 col-md-9 col-10">
                         <h4 class="font-weight-bold">距离</h4>
-                        <p class="grey-text">计算两个几何图形之间的距离。</p>
+                        <p>计算两个几何图形之间的距离。</p>
                         <a class="btn btn-blue btn-sm"><i class="fas fa-sign-in-alt fa-2x"></i></a>
                     </div>
                     <!-- /Grid column -->
@@ -115,7 +117,7 @@
                     <!-- Grid column -->
                     <div class="col-lg-10 col-md-9 col-10">
                         <h4 class="font-weight-bold">交集</h4>
-                        <p class="grey-text">构造几何图形和其他几何图形之间的集合交集。</p>
+                        <p>构造几何图形和其他几何图形之间的集合交集。</p>
                         <a class="btn btn-pink btn-sm"><i class="fas fa-sign-in-alt fa-2x"></i></a>
                     </div>
                     <!-- /Grid column -->
@@ -137,7 +139,7 @@
                     <!-- Grid column -->
                     <div class="col-lg-10 col-md-9 col-10">
                         <h4 class="font-weight-bold">偏移</h4>
-                        <p class="grey-text">根据偏移距离构造给定输入多段线的偏移量。</p>
+                        <p>根据偏移距离构造给定输入多段线的偏移量。</p>
                         <a class="btn btn-purple btn-sm"><i class="fas fa-sign-in-alt fa-2x"></i></a>
                     </div>
                     <!-- /Grid column -->
@@ -163,7 +165,7 @@
                     <!-- Grid column -->
                     <div class="col-lg-10 col-md-9 col-10">
                         <h4 class="font-weight-bold">空间关系</h4>
-                        <p class="grey-text">判断多个几何图形之间是否符合给定的空间关系。</p>
+                        <p>判断多个几何图形之间是否符合给定的空间关系。</p>
                         <a class="btn btn-blue btn-sm"><i class="fas fa-sign-in-alt fa-2x"></i></a>
                     </div>
                     <!-- /Grid column -->
@@ -185,7 +187,7 @@
                     <!-- Grid column -->
                     <div class="col-lg-10 col-md-9 col-10">
                         <h4 class="font-weight-bold">简化</h4>
-                        <p class="grey-text">返回拓扑正确的几何图形数组。</p>
+                        <p>返回拓扑正确的几何图形数组。</p>
                         <a class="btn btn-pink btn-sm"><i class="fas fa-sign-in-alt fa-2x"></i></a>
                     </div>
                     <!-- /Grid column -->
@@ -207,7 +209,7 @@
                     <!-- Grid column -->
                     <div class="col-lg-10 col-md-9 col-10">
                         <h4 class="font-weight-bold">联合</h4>
-                        <p class="grey-text">构造输入几何图形的集合论联合。</p>
+                        <p>构造输入几何图形的集合论联合。</p>
                         <a class="btn btn-purple btn-sm"><i class="fas fa-sign-in-alt fa-2x"></i></a>
                     </div>
                     <!-- /Grid column -->
@@ -218,4 +220,12 @@
         </div>
         <!-- /Grid row -->
     </section>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+        $("#menu-TGISServer").addClass("active");
+        $("#menu-item-geometry-service").addClass("current-menu-item");
+    </script>
 {% endblock %}

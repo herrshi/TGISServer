@@ -16,3 +16,8 @@ def server_home():
 @app.route('/TGISServer/GeometryService/')
 def geometry_service():
     return render_template('server/geometry_service.html')
+
+
+@app.route('/TGISServer/GeometryService/lengths')
+def geometry_service_lengths():
+    return render_template('server/geometry_service_lengths.html')

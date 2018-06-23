@@ -3,3 +3,10 @@
 {% block page_content %}
 
 {% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $("#menu-TGISServer").addClass("active");
+    </script>
+{% endblock %}
