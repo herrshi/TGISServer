@@ -2,6 +2,14 @@
 
 {% block title %}TGIS - 智能交通地图开放平台{% endblock %}
 
+{% block head %}
+    {{ super() }}
+    <script type="text/javascript">
+        //把需要的flask配置传入全局变量, 供js使用
+        window.GIS_PROXY = "{{ config['GIS_PROXY'] }}";
+    </script>
+{% endblock %}
+
 {% block styles %}
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for('.static', filename='assets/css/style.css') }}">
