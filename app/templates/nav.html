@@ -47,8 +47,7 @@
             <li>
                 <div class="logo-wrapper waves-light">
                     <a href="{{ url_for('index') }}">
-                        <img src="{{ url_for('.static', filename='assets/img/dk_logo_text.png') }}"
-                             class="img-fluid flex-center">
+                        <img src="{{ url_for('.static', filename='assets/img/dk_logo_text.png') }}" class="img-fluid flex-center">
                     </a>
                 </div>
             </li>
@@ -69,18 +68,17 @@
                 <ul class="collapsible collapsible-accordion">
                     <!--TGIS Server-->
                     <li>
-                        <a class="collapsible-header waves-effect arrow-r" id="menu-TGISServer">
+                        <a id="menu-server" class="collapsible-header waves-effect arrow-r">
                             TGISServer
                             <i class="fa fa-angle-down rotate-icon"></i>
                         </a>
                         <div class="collapsible-body">
                             <ul>
                                 <li>
-                                    <a href="{{ url_for('geometry_service') }}" class="waves-effect"
-                                       id="menu-item-geometry-service">几何服务</a>
+                                    <a id="menu-item-geometry-service" href="{{ url_for('geometry_service') }}" class="waves-effect">几何服务</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="waves-effect">网络分析服务</a>
+                                    <a id="menu-item-network-analyse" href="#" class="waves-effect">网络分析服务</a>
                                 </li>
                             </ul>
                         </div>

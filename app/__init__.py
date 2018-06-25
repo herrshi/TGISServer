@@ -8,6 +8,8 @@ app = Flask(__name__)
 bootstrap = Bootstrap(app)
 app.config['BOOTSTRAP_SERVE_LOCAL'] = True
 
+app.config.from_object('config')
+
 all_log_handler = TimedRotatingFileHandler('log/all.log', when='midnight', interval=1)
 all_log_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s'))
 all_log_handler.setLevel(logging.INFO)
