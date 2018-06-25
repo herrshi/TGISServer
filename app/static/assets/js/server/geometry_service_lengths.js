@@ -25,7 +25,7 @@ require([
   webMercatorUtils
 ) {
   //允许跨域
-  esriConfig.request.proxyUrl = "http://localhost:8090/proxy/proxy.jsp";
+  esriConfig.request.proxyUrl = window.GIS_PROXY;
 
   let drawLayer = new GraphicsLayer();
 
@@ -107,8 +107,8 @@ require([
         //坐标保留6位小数，更美观
         jsonObj.paths.forEach(path => {
           path.forEach(point => {
-            point[0] = Number(point[0]).toFixed(6);
-            point[1] = Number(point[1]).toFixed(6);
+            point[0] = Number(Number(point[0]).toFixed(6));
+            point[1] = Number(Number(point[1]).toFixed(6));
           });
         });
         return jsonObj;

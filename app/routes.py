@@ -2,6 +2,8 @@
 from flask import render_template, request
 from app import app
 
+from app.tgis_server.geometry_service import length
+
 
 @app.route('/')
 def index():
@@ -19,5 +21,10 @@ def geometry_service():
 
 
 @app.route('/TGISServer/GeometryService/lengths')
-def geometry_service_lengths():
+def geometry_service_lengths_page():
     return render_template('server/geometry_service_lengths.html')
+
+
+@app.route('/TGISServer/GeometryService/lengths/<params>')
+def geometry_service_lengths_cal(params):
+    return str(length(params))
