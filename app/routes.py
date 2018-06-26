@@ -2,7 +2,7 @@
 from flask import render_template, request
 from app import app
 
-from app.tgis_server.geometry_service import length
+from app.tgis_server.geometry_service import lengths
 
 
 @app.route('/')
@@ -26,5 +26,4 @@ def geometry_service_lengths_page():
     if not request.args:
         return render_template('server/geometry_service_lengths.html')
     else:
-        polylines = request.args.get('polylines')
-        return str(length(polylines))
+        return lengths(request.args)

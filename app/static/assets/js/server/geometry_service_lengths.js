@@ -133,7 +133,7 @@ function getLength(url) {
     $("#txtRequestUrl").val(decodeURI(response.url));
     return response.json()
   }).then(data => {
-    $("#txtResults").val(data);
+    $("#txtResults").val(JSON.stringify(data));
   });
 }
 
