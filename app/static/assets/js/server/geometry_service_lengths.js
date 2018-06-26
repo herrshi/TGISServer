@@ -1,3 +1,5 @@
+let drawLayer, map;
+
 require([
   "esri/config",
   "esri/Map",
@@ -27,7 +29,7 @@ require([
   //允许跨域
   esriConfig.request.proxyUrl = window.GIS_PROXY;
 
-  let drawLayer = new GraphicsLayer();
+  drawLayer = new GraphicsLayer();
 
   const basemap = new Basemap({
     baseLayers: [
@@ -36,7 +38,7 @@ require([
       )
     ]
   });
-  const map = new Map({
+  map = new Map({
     basemap: basemap,
     layers: [drawLayer]
   });
@@ -114,7 +116,7 @@ require([
         return jsonObj;
       });
 
-      $("#text-polylines").val(JSON.stringify(polylines));
+      $("#txtPolylines").val(JSON.stringify(polylines));
 
       //继续画下一条线
       enableCreatePolyline();
@@ -124,3 +126,20 @@ require([
 
   }
 });
+
+function getLength(url) {
+  const requestUrl = url + "?polylines=" + $("#txtPolylines").val().trim();
+  fetch(requestUrl).then(response => {
+    $("#txtRequestUrl").val(decodeURI(response.url));
+    return response.json()
+  }).then(data => {
+    $("#txtResults").val(data);
+  });
+}
+
+function clearData() {
+  drawLayer.removeAll();
+  $("#txtPolylines").val("");
+  $("#txtRequestUrl").val("");
+  $("#txtResults").val("");
+}

@@ -22,9 +22,9 @@ def geometry_service():
 
 @app.route('/TGISServer/GeometryService/lengths')
 def geometry_service_lengths_page():
-    return render_template('server/geometry_service_lengths.html')
-
-
-@app.route('/TGISServer/GeometryService/lengths/<params>')
-def geometry_service_lengths_cal(params):
-    return str(length(params))
+    # print(request.args)
+    if not request.args:
+        return render_template('server/geometry_service_lengths.html')
+    else:
+        polylines = request.args.get('polylines')
+        return str(length(polylines))

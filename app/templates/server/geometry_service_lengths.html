@@ -142,7 +142,7 @@
     <!--Sample Panel-->
     <div class="tab-pane fade" id="panel-sample" role="tabpanel">
       <div class="card-body">
-        <div class="row" style="height: 500px">
+        <div class="row" style="height: 600px">
           <!--Map div-->
           <div class="col-lg card py-3 px-3 mr-0 mr-lg-3 mb-3 mb-lg-0">
             <div id="mapViewDiv" class="card-body"></div>
@@ -155,7 +155,8 @@
                 <!--polylines-->
                 <div class="md-form shadow-textarea">
                   <label for="text-polylines">polylines:</label>
-                  <textarea type="text" id="text-polylines" class="form-control" rows="4" placeholder="请输入参数或在地图上点击"></textarea>
+                  <textarea type="text" id="txtPolylines" class="form-control" rows="4"
+                            placeholder="请输入参数或在地图上点击"></textarea>
                 </div>
 
                 <!--calculationType-->
@@ -169,13 +170,20 @@
                 </div>
 
                 <div class="text-center">
-                  <button class="btn btn-primary">计算</button>
-                  <button class="btn btn-info">清除</button>
+                  <button id="btnGetLength" type="button" class="btn btn-primary"
+                          onclick="getLength('{{ url_for('geometry_service_lengths_page') }}')">计算
+                  </button>
+                  <button id="btnClearData" type="button" class="btn btn-info" onclick="clearData()">清除</button>
                 </div>
 
                 <div class="md-form shadow-textarea">
+                  <label for="txtRequestUrl">请求地址:</label>
+                  <textarea type="text" id="txtRequestUrl" class="form-control" rows="2" placeholder=" "></textarea>
+                </div>
+
+                <div class="md-form shadow-textarea mt-5">
                   <label for="text-results">计算结果:</label>
-                  <textarea type="text" id="text-results" class="form-control" rows="2"></textarea>
+                  <textarea type="text" id="txtResults" class="form-control" rows="2" placeholder="  "></textarea>
                 </div>
               </form>
             </div>

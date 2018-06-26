@@ -5,10 +5,14 @@
       <w>basemap</w>
       <w>dropdown</w>
       <w>fontawesome</w>
+      <w>geocodes</w>
+      <w>geocoding</w>
+      <w>geod</w>
       <w>navbar</w>
       <w>polylines</w>
       <w>tgis</w>
       <w>unstyled</w>
+      <w>webmercator</w>
     </words>
   </dictionary>
 </component>
