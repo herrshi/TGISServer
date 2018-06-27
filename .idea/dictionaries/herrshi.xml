@@ -10,6 +10,9 @@
       <w>geod</w>
       <w>navbar</w>
       <w>polylines</w>
+      <w>propertychange</w>
+      <w>selectionchange</w>
+      <w>textarea</w>
       <w>tgis</w>
       <w>unstyled</w>
       <w>webmercator</w>

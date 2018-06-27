@@ -6,7 +6,12 @@
     {{ super() }}
     <script type="text/javascript">
         //把需要的flask配置传入全局变量, 供js使用
-        window.GIS_PROXY = "{{ config['GIS_PROXY'] }}";
+        window.config = {
+          GIS_PROXY: "{{ config['GIS_PROXY'] }}"
+        };
+        window.route = {
+          GEOMETRY_SERVICE_LENGTHS: "{{ url_for('geometry_service_lengths') }}"
+        }
     </script>
 {% endblock %}
 

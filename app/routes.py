@@ -21,9 +21,10 @@ def geometry_service():
 
 
 @app.route('/TGISServer/GeometryService/lengths')
-def geometry_service_lengths_page():
-    # print(request.args)
+def geometry_service_lengths():
+    # 没有输入参数则打开页面
     if not request.args:
         return render_template('server/geometry_service_lengths.html')
+    # 有输入参数就进行计算
     else:
         return lengths(request.args)

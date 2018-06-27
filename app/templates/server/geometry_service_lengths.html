@@ -5,7 +5,7 @@
   <!-- Nav tabs -->
   <ul class="nav nav-tabs nav-justified indigo" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#panel-API" role="tab">API</a>
+      <a class="nav-link active" data-toggle="tab" href="#panel-API" role="tab">服务说明</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-toggle="tab" href="#panel-sample" role="tab">实例</a>
@@ -21,7 +21,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-3">URL:</div>
-                <div class="col-9">{{ url_for('geometry_service_lengths_page') }}</div>
+                <div class="col-9">{{ url_for('geometry_service_lengths') }}</div>
               </div>
             </div>
           </div>
@@ -106,11 +106,7 @@
                       </li>
                       <li class="pb-3">
                         <span class="user-text">geodesic</span> -
-                        大地测量。在大地测量计算中，多边形（或多义线）的每对节点之间的线段被当做是地球表面最短的路径。如果没有为面积或长度定义单位，则结果将以米作为单位。如果用户想知道某个几何图形的大地测量长度或面积，则可以使用本类型。如果用户想计算绘制在地图上的几何图形长度或面积，请使用PreserveShape。
-                      </li>
-                      <li class="pb-3">
-                        <span class="user-text">preserveShape</span> -
-                        保持形状。在保持形状的计算中，多边形（或多义线）的面积和长度将在地球椭球体的表面进行计算。几何体的图形在其坐标系下保持不变。这意味着将忽略地图的坐标系（地理或投影），绘制在地图上的几何体的形状在计算长度和面积时始终保持不变。例如，如果你在平面的世界地图上绘制一条长线，大地测量方法将给出两个端点之间沿地球表面的最短路径的长度，而PreserveShape方法将给出沿着你实际绘制的线的距离（即使可能不是两端点间的最短距离）。
+                        大地测量。在大地测量计算中，多边形（或多义线）的每对节点之间的线段被当做是地球表面最短的路径。如果没有为面积或长度定义单位，则结果将以米作为单位。如果用户想知道某个几何图形的大地测量长度或面积，则可以使用本类型。
                       </li>
                     </ul>
                   </td>
@@ -161,19 +157,16 @@
 
                 <!--calculationType-->
                 <div class="md-form shadow-textarea">
-                  <select id="select-calculation-type" class="mdb-select colorful-select dropdown-primary">
-                    <option value="planar">planar - 平面</option>
+                  <select id="selCalculationType" class="mdb-select colorful-select dropdown-primary">
                     <option value="geodesic">geodesic - 大地测量</option>
-                    <option value="preserveShape">preserveShape - 保持形状</option>
+                    <option value="planar">planar - 平面</option>
                   </select>
-                  <label for="select-calculation-type">calculationType:</label>
+                  <label for="selCalculationType">calculationType:</label>
                 </div>
 
                 <div class="text-center">
-                  <button id="btnGetLength" type="button" class="btn btn-primary"
-                          onclick="getLength('{{ url_for('geometry_service_lengths_page') }}')">计算
-                  </button>
-                  <button id="btnClearData" type="button" class="btn btn-info" onclick="clearData()">清除</button>
+                  <button id="btnClearData" type="button" class="btn btn-info btn-rounded" disabled>清除</button>
+                  <button id="btnOpenLink" type="button" class="btn btn-info btn-rounded" disabled>打开请求地址</button>
                 </div>
 
                 <div class="md-form shadow-textarea">

@@ -1,5 +1,3 @@
-let drawLayer, map;
-
 require([
   "esri/config",
   "esri/Map",
@@ -27,9 +25,9 @@ require([
   webMercatorUtils
 ) {
   //允许跨域
-  esriConfig.request.proxyUrl = window.GIS_PROXY;
+  esriConfig.request.proxyUrl = window.config.GIS_PROXY;
 
-  drawLayer = new GraphicsLayer();
+  let drawLayer = new GraphicsLayer();
 
   const basemap = new Basemap({
     baseLayers: [
@@ -38,7 +36,7 @@ require([
       )
     ]
   });
-  map = new Map({
+  let map = new Map({
     basemap: basemap,
     layers: [drawLayer]
   });
@@ -67,6 +65,14 @@ require([
     enableCreatePolyline();
   });
 
+  const lineSymbol = {
+    type: "simple-line", // autocasts as new SimpleFillSymbol
+    color: [4, 90, 141],
+    width: 4,
+    cap: "round",
+    join: "round"
+  };
+
   function enableCreatePolyline() {
     const action = draw.create("polyline", {
       mode: "click"
@@ -86,16 +92,11 @@ require([
         paths: vertices,
         spatialReference: view.spatialReference
       }),
-      symbol: {
-        type: "simple-line", // autocasts as new SimpleFillSymbol
-        color: [4, 90, 141],
-        width: 4,
-        cap: "round",
-        join: "round"
-      }
+      symbol: lineSymbol
     });
 
     if (evt.type === "draw-complete") {
+      //绘制完成时的graphic放在drawLayer中
       drawLayer.add(graphic);
       //将当前显示的graphic转换为polylines参数格式
       //[<polyline1>, <polyline2>, ..., <polylineN>]
@@ -116,30 +117,77 @@ require([
         return jsonObj;
       });
 
-      $("#txtPolylines").val(JSON.stringify(polylines));
+      const $txtPolylines = $("#txtPolylines");
+      $txtPolylines.val(JSON.stringify(polylines));
+      //.val()不会触发change/input事件，手动触发
+      $txtPolylines.trigger("input");
+
+      //调用长度计算接口
+      getLength();
 
       //继续画下一条线
       enableCreatePolyline();
     } else {
+      //临时graphic放在view.graphics里，方便清除
       view.graphics.add(graphic);
     }
-
   }
-});
 
-function getLength(url) {
-  const requestUrl = url + "?polylines=" + $("#txtPolylines").val().trim();
-  fetch(requestUrl).then(response => {
-    $("#txtRequestUrl").val(decodeURI(response.url));
-    return response.json()
-  }).then(data => {
-    $("#txtResults").val(JSON.stringify(data));
+  function getLength() {
+    const polylineParams = $("#txtPolylines")
+      .val()
+      .trim();
+    if (polylineParams !== "") {
+      const param = {
+        polylines: polylineParams,
+        calculationType: $("#selCalculationType").val()
+      };
+      const requestUrl = generateUrlWithParams(
+        window.route.GEOMETRY_SERVICE_LENGTHS,
+        param
+      );
+      fetch(requestUrl)
+        .then(response => {
+          const $txtRequestUrl = $("#txtRequestUrl");
+          $txtRequestUrl.val(decodeURI(response.url));
+          $txtRequestUrl.trigger("input");
+          return response.json();
+        })
+        .then(data => {
+          $("#txtResults").val(JSON.stringify(data));
+        });
+    }
+  }
+
+  $("#btnOpenLink").click(function() {
+    window.open($("#txtRequestUrl").val());
   });
-}
 
-function clearData() {
-  drawLayer.removeAll();
-  $("#txtPolylines").val("");
-  $("#txtRequestUrl").val("");
-  $("#txtResults").val("");
-}
+  $("#btnClearData").click(function() {
+    drawLayer.removeAll();
+
+    const $txtPolylines = $("#txtPolylines");
+    $txtPolylines.val("");
+    $txtPolylines.trigger("input");
+
+    const $txtRequestUrl = $("#txtRequestUrl");
+    $txtRequestUrl.val("");
+    $txtRequestUrl.trigger("input");
+
+    $("#txtResults").val("");
+  });
+
+  $("#selCalculationType").change(function() {
+    getLength();
+  });
+
+  //polyline参数有内容时才能点"清除"
+  $("#txtPolylines").on("input", function() {
+    $("#btnClearData").prop("disabled", this.value.length === 0);
+  });
+
+  //请求地址有内容时才能点"打开请求地址"
+  $("#txtRequestUrl").on("input", function() {
+    $("#btnOpenLink").prop("disabled", this.value.length === 0);
+  });
+});
