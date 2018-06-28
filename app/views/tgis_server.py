@@ -26,3 +26,8 @@ def geometry_service_lengths():
         return lengths(request.args)
 
 
+@tgis_server.route('/TGISServer/GeometryService/areasAndLengths')
+def geometry_service_areas():
+    return render_template('server/geometry_service_areas.html')
+
+

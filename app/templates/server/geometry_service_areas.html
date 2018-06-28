@@ -1,7 +1,7 @@
 {% extends "api.html" %}
 
 {% block api_title %}
-  <h4 class="font-weight-bold">量算-线</h4>
+  <h4 class="font-weight-bold">量算 - 面</h4>
 {% endblock %}
 
 {% block api_panel %}
@@ -11,7 +11,7 @@
       <div class="card-body">
         <div class="row">
           <div class="col-3">URL:</div>
-          <div class="col-9">{{ url_for('tgis_server.geometry_service_lengths') }}</div>
+          <div class="col-9">{{ url_for('tgis_server.geometry_service_areas') }}</div>
         </div>
       </div>
     </div>
@@ -21,7 +21,7 @@
   <section class="my-2">
     <div class="card">
       <div class="card-body">
-        <p><span class="user-text">lengths</span>计算输入数组中指定的每条折线的二维欧几里得长度或测地线长度。</p>
+        <p><span class="user-text">areasAndLengths</span>计算输入数组中指定的每个多边形的面积和周长。</p>
         <p>此操作的参数在以下参数表中定义:</p>
       </div>
     </div>
@@ -47,35 +47,39 @@
           <tbody>
           <tr>
             <td>
-              <span class="user-text">polylines</span>
+              <span class="user-text">polygons</span>
             </td>
             <td class="blockquote pt-0">
               <p>要计算长度的折线数组</p>
               <p>JSON结构：</p>
               <section class="panel">
-                <pre><code>[ &lt;polyline1&gt;, &lt;polyline2&gt;, ..., &lt;polylineN&gt; ]</code></pre>
+                <pre><code>[ &lt;polygon1&gt;, &lt;polygon2&gt;, ..., &lt;polygonN&gt; ]</code></pre>
               </section>
               <p>示例：</p>
               <section class="panel">
                                             <pre><code>[
  {
-  <span class="red-text">"paths"</span> : [
+  <span class="red-text">"rings"</span> : [
    [[<span class="blue-text">-117</span>,<span class="blue-text">34</span>],[<span class="blue-text">-116</span>,<span
                                                 class="blue-text">34</span>],[<span class="blue-text">-117</span>,<span
-                                                class="blue-text">33</span>]],
+                                                class="blue-text">33</span>],[<span class="blue-text">-117</span>,<span
+                                                class="blue-text">34</span>]],
    [[<span class="blue-text">-115</span>,<span class="blue-text">44</span>],[<span class="blue-text">-114</span>,<span
                                                 class="blue-text">43</span>],[<span class="blue-text">-115</span>,<span
-                                                class="blue-text">43</span>]]
+                                                class="blue-text">43</span>],[<span class="blue-text">-115</span>,<span
+                                                class="blue-text">44</span>]]
   ]
  },
  {
-  <span class="red-text">"paths"</span> : [
+  <span class="red-text">"rings"</span> : [
    [[<span class="blue-text">32.49</span>,<span class="blue-text">17.83</span>],[<span
                                                 class="blue-text">31.96</span>,<span
                                                 class="blue-text">17.59</span>],[<span
                                                 class="blue-text">30.87</span>,<span
                                                 class="blue-text">17.01</span>],[<span
-                                                class="blue-text">30.11</span>,<span class="blue-text">16.86</span>]]
+                                                class="blue-text">30.11</span>,<span
+                                                class="blue-text">16.86</span>],[<span
+                                                class="blue-text">32.49</span>,<span class="blue-text">17.83</span>]]
   ]
  }
 ]</code></pre>
@@ -109,77 +113,6 @@
       </div>
     </div>
   </section>
-
-  <!--response syntax-->
-  <section class="my-2">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">JSON响应语法</h4>
-        <p>JSON结构:</p>
-        <section class="panel">
-                 <pre><code>{
-<span class="red-text">"lengths"</span> : [ &lt;length1&gt;, &lt;length2&gt;, ..., &lt;lengthN&gt; ]
-}</code></pre>
-        </section>
-        <p>示例:</p>
-        <section class="panel">
-          <pre><code>{
- <span class="red-text">"lengths"</span>: [
-  <span class="blue-text">456.04101753137257</span>,
-  <span class="blue-text">277.29464412330174</span>
- ]
-}</code></pre>
-        </section>
-      </div>
-    </div>
-  </section>
-{% endblock %}
-
-{% block sample_panel %}
-  <div class="row" style="height: 600px">
-    <!--Map div-->
-    <div class="col-lg card py-3 px-3 mr-0 mr-lg-3 mb-3 mb-lg-0">
-      <div id="mapViewDiv" class="card-body"></div>
-    </div>
-
-    <!--Other div-->
-    <div class="col-lg card">
-      <div class="card-body">
-        <form>
-          <!--polylines-->
-          <div class="md-form shadow-textarea">
-            <label for="text-polylines">polylines:</label>
-            <textarea type="text" id="txtPolylines" class="form-control" rows="4"
-                      placeholder="请输入参数或在地图上点击"></textarea>
-          </div>
-
-          <!--calculationType-->
-          <div class="md-form shadow-textarea">
-            <select id="selCalculationType" class="mdb-select colorful-select dropdown-primary">
-              <option value="geodesic">geodesic - 大地测量</option>
-              <option value="planar">planar - 平面</option>
-            </select>
-            <label for="selCalculationType">calculationType:</label>
-          </div>
-
-          <div class="text-center">
-            <button id="btnClearData" type="button" class="btn btn-info btn-rounded" disabled>清除</button>
-            <button id="btnOpenLink" type="button" class="btn btn-info btn-rounded" disabled>打开请求地址</button>
-          </div>
-
-          <div class="md-form shadow-textarea">
-            <label for="txtRequestUrl">请求地址:</label>
-            <textarea type="text" id="txtRequestUrl" class="form-control" rows="2" placeholder=" "></textarea>
-          </div>
-
-          <div class="md-form shadow-textarea mt-5">
-            <label for="text-results">计算结果:</label>
-            <textarea type="text" id="txtResults" class="form-control" rows="2" placeholder="  "></textarea>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
 {% endblock %}
 
 {% block scripts %}
@@ -190,5 +123,5 @@
     $('#menu-item-geometry-service').addClass('current-menu-item');
   </script>
 
-  <script src="{{ url_for('.static', filename='assets/js/server/geometry_service_lengths.js') }}"></script>
+  {#  <script src="{{ url_for('.static', filename='assets/js/server/geometry_service_lengths.js') }}"></script>#}
 {% endblock %}

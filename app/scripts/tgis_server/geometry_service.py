@@ -3,16 +3,16 @@ from shapely.geometry import LineString
 import json
 
 
-def _get_length(point1: list, point2: list) -> float:
-    geod = Geodesic.WGS84
-    g = geod.Inverse(point1[1], point1[0], point2[1], point2[0])
+def _get_geodesic_length(point1: list, point2: list) -> float:
+    geodesic = Geodesic.WGS84
+    g = geodesic.Inverse(point1[1], point1[0], point2[1], point2[0])
     distance = g['s12']
     return distance
 
 
 def lengths(params: dict) -> str:
     lines_string = params.get('polylines')
-    calculation_type = params.get('calculationType')
+    calculation_type = params.get('calculationType') or 'geodesic'
     lines = json.loads(lines_string)
     lines_length = []
     for line in lines:
@@ -26,7 +26,7 @@ def lengths(params: dict) -> str:
                 while i < len(path):
                     point1 = path[i - 1]
                     point2 = path[i]
-                    segment_length = _get_length(point1, point2)
+                    segment_length = _get_geodesic_length(point1, point2)
                     path_length += segment_length
                     i = i + 1
                 # 长度保留两位小数

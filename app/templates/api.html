@@ -1,0 +1,32 @@
+{% extends "nav.html" %}
+
+{% block main %}
+  {% block api_title %} {% endblock %}
+
+  <!--nav tabs-->
+  <ul class="nav nav-tabs nav-justified indigo" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#panel-API" role="tab">服务说明</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#panel-sample" role="tab">实例</a>
+    </li>
+  </ul>
+
+  <!--tab panels-->
+  <div class="tab-content">
+    <!--API Panel-->
+    <div class="tab-pane fade in show active" id="panel-API" role="tabpanel">
+      <div class="card-body">
+        {% block api_panel %} {% endblock %}
+      </div>
+    </div>
+
+    <!--sample panel-->
+    <div class="tab-pane fade" id="panel-sample" role="tabpanel">
+      <div class="card-body">
+        {% block sample_panel %} {% endblock %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
