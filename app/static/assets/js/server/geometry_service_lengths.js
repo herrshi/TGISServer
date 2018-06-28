@@ -24,8 +24,10 @@ require([
   Home,
   webMercatorUtils
 ) {
-  //允许跨域
-  esriConfig.request.proxyUrl = window.config.GIS_PROXY;
+  if (window.config.GIS_PROXY) {
+    //允许跨域
+    esriConfig.request.proxyUrl = window.config.GIS_PROXY;
+  }
 
   let drawLayer = new GraphicsLayer();
 

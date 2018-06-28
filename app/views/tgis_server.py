@@ -1,26 +1,22 @@
-# -*- coding: UTF-8 -*-
-from flask import render_template, request
-from app import app
+from flask import Blueprint, render_template, request
+from app.scripts.tgis_server import lengths
 
-from app.tgis_server.geometry_service import lengths
-
-
-@app.route('/')
-def index():
-    return render_template('index.html')
+tgis_server = Blueprint('tgis_server', __name__,
+                        template_folder='templates',
+                        static_folder='static')
 
 
-@app.route('/TGISServer')
+@tgis_server.route('/TGISServer')
 def server_home():
     return render_template('server/server_home.html')
 
 
-@app.route('/TGISServer/GeometryService/')
+@tgis_server.route('/TGISServer/GeometryService/')
 def geometry_service():
     return render_template('server/geometry_service.html')
 
 
-@app.route('/TGISServer/GeometryService/lengths')
+@tgis_server.route('/TGISServer/GeometryService/lengths')
 def geometry_service_lengths():
     # 没有输入参数则打开页面
     if not request.args:
@@ -28,3 +24,5 @@ def geometry_service_lengths():
     # 有输入参数就进行计算
     else:
         return lengths(request.args)
+
+

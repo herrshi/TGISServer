@@ -46,7 +46,7 @@
             <!--logo-->
             <li>
                 <div class="logo-wrapper waves-light">
-                    <a href="{{ url_for('index') }}">
+                    <a href="{{ url_for('home.index') }}">
                         <img src="{{ url_for('.static', filename='assets/img/dk_logo_text.png') }}" class="img-fluid flex-center">
                     </a>
                 </div>
@@ -75,7 +75,7 @@
                         <div class="collapsible-body">
                             <ul>
                                 <li>
-                                    <a id="menu-item-geometry-service" href="{{ url_for('geometry_service') }}" class="waves-effect">几何服务</a>
+                                    <a id="menu-item-geometry-service" href="{{ url_for('tgis_server.geometry_service') }}" class="waves-effect">几何服务</a>
                                 </li>
                                 <li>
                                     <a id="menu-item-network-analyse" href="#" class="waves-effect">网络分析服务</a>

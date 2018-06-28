@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
-
+from .views.home import home
+from .views.tgis_server import tgis_server
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -24,5 +25,6 @@ app.config.from_object('config')
 #
 # app.logger.info('TGISServer startup')
 
-from app import routes
-
+# from app import routes
+app.register_blueprint(home)
+app.register_blueprint(tgis_server)

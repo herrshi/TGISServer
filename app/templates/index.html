@@ -67,7 +67,7 @@
                                 <!-- Title -->
                                 <h2 class="card-header-title">TGISServer</h2>
 
-                                <a href="{{ url_for('server_home') }}">
+                                <a href="{{ url_for('tgis_server.geometry_service') }}">
                                     <div class="mask rgba-white-slight"></div>
                                 </a>
                             </div>
@@ -76,7 +76,7 @@
                             <div class="card-body card-body-cascade text-center">
                                 <!-- Text -->
                                 <p class="card-text">后台GIS服务，提供量算、路径规划等服务。</p>
-                                <a href="{{ url_for('geometry_service') }}" class="btn btn-light-green btn-rounded"><i
+                                <a href="{{ url_for('tgis_server.geometry_service') }}" class="btn btn-light-green btn-rounded"><i
                                         class="far fa-arrow-alt-circle-right"></i> 进入</a>
                             </div>
                         </div>
