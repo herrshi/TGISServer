@@ -83,6 +83,8 @@
   ]
  }
 ]</code></pre>
+                <p>第一个多边形的rings属性包含两条路径，代表一个有"洞"的多边形。</p>
+                <p>第二个多边形的rings属性只有一条路径，代表一个完整的多边形</p>
               </section>
             </td>
           </tr>
@@ -113,6 +115,49 @@
       </div>
     </div>
   </section>
+
+  <!--response syntax-->
+  <section class="my-2">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">JSON响应语法</h4>
+        <p>JSON结构:</p>
+        <section class="panel">
+                 <pre><code>{
+  <span class="red-text">"lengths"</span> : [ &lt;length1&gt;, &lt;length2&gt;, ..., &lt;lengthN&gt; ],
+  <span class="red-text">"areas"</span> : [ &lt;area1&gt;, &lt;area2&gt;, ..., &lt;areaN&gt; ]
+}</code></pre>
+        </section>
+
+        <p>示例:</p>
+        <section class="panel">
+    <pre><code>[
+  {
+    <span class="red-text">"rings"</span> :
+    [
+      [[<span class="blue-text">-117</span>,<span class="blue-text">34</span>],[<span
+        class="blue-text">-116</span>,<span class="blue-text">34</span>],[<span class="blue-text">-117</span>,<span
+        class="blue-text">33</span>],[<span class="blue-text">-117</span>,<span class="blue-text">34</span>]],
+      [[<span class="blue-text">-115</span>,<span class="blue-text">44</span>],[<span
+        class="blue-text">-114</span>,<span class="blue-text">43</span>],[<span class="blue-text">-115</span>,<span
+        class="blue-text">43</span>],[<span class="blue-text">-115</span>,<span class="blue-text">44</span>]]
+    ]
+  },
+  {
+    <span class="red-text">"rings"</span> :
+    [
+      [[<span class="blue-text">32</span>,<span class="blue-text">17</span>],[<span class="blue-text">31</span>,<span
+        class="blue-text">17</span>],[<span class="blue-text">30</span>,<span class="blue-text">17</span>],[<span
+        class="blue-text">30</span>,<span class="blue-text">16</span>],[<span class="blue-text">32</span>,<span
+        class="blue-text">17</span>]]
+    ]
+  }
+]</code></pre>
+        </section>
+      </div>
+    </div>
+  </section>
+
 {% endblock %}
 
 {% block scripts %}
