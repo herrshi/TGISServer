@@ -133,23 +133,17 @@
         <section class="panel">
     <pre><code>[
   {
-    <span class="red-text">"rings"</span> :
+    <span class="red-text">"areas"</span> :
     [
-      [[<span class="blue-text">-117</span>,<span class="blue-text">34</span>],[<span
-        class="blue-text">-116</span>,<span class="blue-text">34</span>],[<span class="blue-text">-117</span>,<span
-        class="blue-text">33</span>],[<span class="blue-text">-117</span>,<span class="blue-text">34</span>]],
-      [[<span class="blue-text">-115</span>,<span class="blue-text">44</span>],[<span
-        class="blue-text">-114</span>,<span class="blue-text">43</span>],[<span class="blue-text">-115</span>,<span
-        class="blue-text">43</span>],[<span class="blue-text">-115</span>,<span class="blue-text">44</span>]]
+      <span class="blue-text">2150.340979272913</span>,
+      <span class="blue-text">2800449.740201426</span>,
     ]
   },
   {
-    <span class="red-text">"rings"</span> :
+    <span class="red-text">"length"</span> :
     [
-      [[<span class="blue-text">32</span>,<span class="blue-text">17</span>],[<span class="blue-text">31</span>,<span
-        class="blue-text">17</span>],[<span class="blue-text">30</span>,<span class="blue-text">17</span>],[<span
-        class="blue-text">30</span>,<span class="blue-text">16</span>],[<span class="blue-text">32</span>,<span
-        class="blue-text">17</span>]]
+      <span class="blue-text">222.93213167603818</span>,
+      <span class="blue-text">264.5927746444603</span>,
     ]
   }
 ]</code></pre>
@@ -160,6 +154,23 @@
 
 {% endblock %}
 
+{% block sample_panel %}
+  <div class="row" style="height: 600px">
+    <!--Map div-->
+    <div class="col-lg card py-3 px-3 mr-0 mr-lg-3 mb-3 mb-lg-0">
+      <div id="mapViewDiv" class="card-body"></div>
+    </div>
+
+    <!--Other div-->
+    <div class="col-lg card">
+      <div class="card-body">
+
+      </div>
+    </div>
+
+  </div>
+{% endblock %}
+
 {% block scripts %}
   {{ super() }}
 
@@ -168,5 +179,5 @@
     $('#menu-item-geometry-service').addClass('current-menu-item');
   </script>
 
-  {#  <script src="{{ url_for('.static', filename='assets/js/server/geometry_service_lengths.js') }}"></script>#}
+  <script>require(["{{ url_for('.static', filename='assets/js/server/geometry_service_areas.js') }}"]);</script>
 {% endblock %}
