@@ -4,8 +4,7 @@
 
 # IntelliJ project files
 .idea
-*.iml
-/log
 out
 gen
 /node_modules/
+/log/

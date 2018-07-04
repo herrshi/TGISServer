@@ -1,4 +1,8 @@
-import {Map} from "../map/map";
+import { Map } from "../map/map";
 
 const map = new Map("mapViewDiv");
-map.startDraw("polygon");
+map.createMap().then(() => {
+  map.startDraw("polygon").then(vertices => {
+    console.log(vertices);
+  });
+});
