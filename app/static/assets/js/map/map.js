@@ -9,7 +9,7 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
             this.rootDiv = divName;
         }
         createMap() {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 const basemap = new Basemap({
                     baseLayers: [
                         new TileLayer({

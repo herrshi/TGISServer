@@ -28,7 +28,7 @@ export class Map {
   }
 
   public createMap() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const basemap = new Basemap({
         baseLayers: [
           new TileLayer({

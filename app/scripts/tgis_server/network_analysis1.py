@@ -14,8 +14,7 @@ museum = (31.235, 121.45)
 closest_node_to_lib = ox.get_nearest_node(G, library, method='haversine')
 closest_node_to_museum = ox.get_nearest_node(G, museum, method='haversine')
 
-route = nx.shortest_path(G, closest_node_to_lib,
-                         closest_node_to_museum)
+route = nx.shortest_path(G, closest_node_to_lib, closest_node_to_museum)
 print(route)
 
 total_line = []
