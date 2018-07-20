@@ -2,15 +2,18 @@
 /// <amd-dependency path="esri/core/tsSupport/decorateHelper" name="__decorate" />
 
 import EsriMap = require("esri/Map");
-
 import MapView = require("esri/views/MapView");
 import Basemap = require("esri/Basemap");
 import TileLayer = require("esri/layers/TileLayer");
 import GraphicsLayer = require("esri/layers/GraphicsLayer");
-
 import HomeWidget = require("esri/widgets/Home");
 import Draw = require("esri/views/2d/draw/Draw");
 import Graphic = require("esri/Graphic");
+import webMercatorUtils = require("esri/geometry/support/webMercatorUtils");
+import Polygon = require("esri/geometry/Polygon");
+
+
+import {CoordTransform} from "../map/coordTransform"
 
 interface DrawEvent {
   vertices: number[][];
@@ -28,7 +31,7 @@ export class Map {
   }
 
   public createMap() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const basemap = new Basemap({
         baseLayers: [
           new TileLayer({
@@ -128,7 +131,16 @@ export class Map {
           //绘制完成以后加入GraphicsLayer
           //并通过promise返回geometry对象
           this.drawLayer.add(graphic);
-          resolve(vertices);
+
+          let resultGeometry = graphic.geometry;
+          //先把墨卡托转到wgs
+          if (this.mapView.spatialReference.isWebMercator) {
+            resultGeometry = webMercatorUtils.webMercatorToGeographic(graphic.geometry);
+          }
+          console.log(resultGeometry.toJSON());
+          //纠偏
+          resultGeometry = CoordTransform.transformPolygon("gcj02", "wgs84", <Polygon>resultGeometry);
+          resolve(resultGeometry.toJSON());
         } else {
           this.mapView.graphics.add(graphic);
         }

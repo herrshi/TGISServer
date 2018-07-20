@@ -1,6 +1,6 @@
 /// <amd-dependency path="esri/core/tsSupport/declareExtendsHelper" name="__extends" />
 /// <amd-dependency path="esri/core/tsSupport/decorateHelper" name="__decorate" />
-define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/core/tsSupport/decorateHelper", "esri/Map", "esri/views/MapView", "esri/Basemap", "esri/layers/TileLayer", "esri/layers/GraphicsLayer", "esri/widgets/Home", "esri/views/2d/draw/Draw", "esri/Graphic"], function (require, exports, __extends, __decorate, EsriMap, MapView, Basemap, TileLayer, GraphicsLayer, HomeWidget, Draw, Graphic) {
+define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/core/tsSupport/decorateHelper", "esri/Map", "esri/views/MapView", "esri/Basemap", "esri/layers/TileLayer", "esri/layers/GraphicsLayer", "esri/widgets/Home", "esri/views/2d/draw/Draw", "esri/Graphic", "esri/geometry/support/webMercatorUtils", "../map/coordTransform"], function (require, exports, __extends, __decorate, EsriMap, MapView, Basemap, TileLayer, GraphicsLayer, HomeWidget, Draw, Graphic, webMercatorUtils, coordTransform_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Map {
@@ -9,7 +9,7 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
             this.rootDiv = divName;
         }
         createMap() {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 const basemap = new Basemap({
                     baseLayers: [
                         new TileLayer({
@@ -97,7 +97,15 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
                         //绘制完成以后加入GraphicsLayer
                         //并通过promise返回geometry对象
                         this.drawLayer.add(graphic);
-                        resolve(vertices);
+                        let resultGeometry = graphic.geometry;
+                        //先把墨卡托转到wgs
+                        if (this.mapView.spatialReference.isWebMercator) {
+                            resultGeometry = webMercatorUtils.webMercatorToGeographic(graphic.geometry);
+                        }
+                        console.log(resultGeometry.toJSON());
+                        //纠偏
+                        resultGeometry = coordTransform_1.CoordTransform.transformPolygon("gcj02", "wgs84", resultGeometry);
+                        resolve(resultGeometry.toJSON());
                     }
                     else {
                         this.mapView.graphics.add(graphic);
