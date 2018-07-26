@@ -142,18 +142,18 @@
       <div id="mapViewDiv" class="card-body"></div>
     </div>
 
-    <!--Other div-->
+    <!--Param & request & response div-->
     <div class="col-lg card">
       <div class="card-body">
         <form>
-          <!--polylines-->
+          <!--polylines params-->
           <div class="md-form shadow-textarea">
-            <label for="text-polylines">polylines:</label>
+            <label for="txtPolylines">polylines:</label>
             <textarea type="text" id="txtPolylines" class="form-control" rows="4"
                       placeholder="请输入参数或在地图上点击"></textarea>
           </div>
 
-          <!--calculationType-->
+          <!--calculationType params-->
           <div class="md-form shadow-textarea">
             <select id="selCalculationType" class="mdb-select colorful-select dropdown-primary">
               <option value="geodesic">geodesic - 大地测量</option>
@@ -162,16 +162,19 @@
             <label for="selCalculationType">calculationType:</label>
           </div>
 
+          <!--Actions-->
           <div class="text-center">
             <button id="btnClearData" type="button" class="btn btn-info btn-rounded" disabled>清除</button>
             <button id="btnOpenLink" type="button" class="btn btn-info btn-rounded" disabled>打开请求地址</button>
           </div>
 
+          <!--Request-->
           <div class="md-form shadow-textarea">
             <label for="txtRequestUrl">请求地址:</label>
             <textarea type="text" id="txtRequestUrl" class="form-control" rows="2" placeholder=" "></textarea>
           </div>
 
+          <!--Response-->
           <div class="md-form shadow-textarea mt-5">
             <label for="text-results">计算结果:</label>
             <textarea type="text" id="txtResults" class="form-control" rows="2" placeholder="  "></textarea>

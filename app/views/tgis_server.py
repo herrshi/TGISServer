@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from app.scripts.tgis_server import lengths
+from app.scripts.tgis_server import lengths, areas
 
 tgis_server = Blueprint('tgis_server', __name__,
                         template_folder='templates',
@@ -28,6 +28,9 @@ def geometry_service_lengths():
 
 @tgis_server.route('/TGISServer/GeometryService/areasAndLengths')
 def geometry_service_areas():
-    return render_template('server/geometry_service_areas.html')
+    if not request.args:
+        return render_template('server/geometry_service_areas.html')
+    else:
+        return areas(request.args)
 
 

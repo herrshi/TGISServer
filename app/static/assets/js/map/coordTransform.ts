@@ -17,17 +17,17 @@ export class CoordTransform {
 
   /**
    * 火星坐标系转百度坐标系
-   * @param {number} long - 火星坐标系经度
+   * @param {number} lng - 火星坐标系经度
    * @param {number} lat - 火星坐标系纬度
    * @return {[number, number]} - 百度坐标系经纬度
    * */
-  public static gcj02ToBd09([long, lat]: [number, number]) {
-    long = +long;
+  public static gcj02ToBd09([lng, lat]: [number, number]) {
+    lng = +lng;
     lat = +lat;
     const z: number =
-      Math.sqrt(long * long + lat * lat) + 0.00002 * Math.sin(lat * this.x_pi);
+      Math.sqrt(lng * lng + lat * lat) + 0.00002 * Math.sin(lat * this.x_pi);
     const theta: number =
-      Math.atan2(lat, long) + 0.000003 * Math.cos(long * this.x_pi);
+      Math.atan2(lat, lng) + 0.000003 * Math.cos(lng * this.x_pi);
     const bd_lng: number = z * Math.cos(theta) + 0.0065;
     const bd_lat: number = z * Math.sin(theta) + 0.006;
     return [bd_lng, bd_lat];
@@ -35,14 +35,14 @@ export class CoordTransform {
 
   /**
    * 百度坐标系转火星坐标系
-   * @param {number} long - 百度坐标系经度
+   * @param {number} lng - 百度坐标系经度
    * @param {number} lat - 百度坐标系纬度
    * @return {[number, number]} - 火星坐标系经纬度
    * */
-  public static bd09ToGcj02([long, lat]: [number, number]) {
-    long = +long;
+  public static bd09ToGcj02([lng, lat]: [number, number]) {
+    lng = +lng;
     lat = +lat;
-    const x: number = long - 0.0065;
+    const x: number = lng - 0.0065;
     const y: number = lat - 0.006;
     const z: number =
       Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * this.x_pi);
@@ -54,44 +54,44 @@ export class CoordTransform {
 
   /**
    * 火星坐标系转WGS84坐标系
-   * @param {number} long - 火星坐标系经度
+   * @param {number} lng - 火星坐标系经度
    * @param {number} lat - 火星坐标系纬度
    * @return {[number, number]} - WGS84坐标系经纬度
    * */
   public static gcj02ToWgs84([lng, lat]: [number, number]) {
-    var lat = +lat;
-    var lng = +lng;
+    lat = +lat;
+    lng = +lng;
     if (this.outOfChina([lng, lat])) {
       return [lng, lat]
     } else {
-      var dlat = this.transformLat([lng - 105.0, lat - 35.0]);
-      var dlng = this.transformLong([lng - 105.0, lat - 35.0]);
-      var radlat = lat / 180.0 * Math.PI;
-      var magic = Math.sin(radlat);
+      let dLat = this.transformLat([lng - 105.0, lat - 35.0]);
+      let dLng = this.transformLong([lng - 105.0, lat - 35.0]);
+      const radLat = lat / 180.0 * Math.PI;
+      let magic = Math.sin(radLat);
       magic = 1 - this.ee * magic * magic;
-      var sqrtmagic = Math.sqrt(magic);
-      dlat = (dlat * 180.0) / ((this.a * (1 - this.ee)) / (magic * sqrtmagic) * Math.PI);
-      dlng = (dlng * 180.0) / (this.a / sqrtmagic * Math.cos(radlat) * Math.PI);
-      var mglat = lat + dlat;
-      var mglng = lng + dlng;
-      return [lng * 2 - mglng, lat * 2 - mglat]
+      const sqrtMagic = Math.sqrt(magic);
+      dLat = (dLat * 180.0) / ((this.a * (1 - this.ee)) / (magic * sqrtMagic) * Math.PI);
+      dLng = (dLng * 180.0) / (this.a / sqrtMagic * Math.cos(radLat) * Math.PI);
+      let mgLat = lat + dLat;
+      let mgLng = lng + dLng;
+      return [lng * 2 - mgLng, lat * 2 - mgLat]
     }
   }
 
   /**
    * WGS84坐标系转火星坐标系
-   * @param {number} long - WGS84坐标系经度
+   * @param {number} lng - WGS84坐标系经度
    * @param {number} lat - WGS84坐标系纬度
    * @return {[number, number]} - 火星坐标系经纬度
    * */
-  public static wgs84ToGcj02([long, lat]: [number, number]) {
-    long = +long;
+  public static wgs84ToGcj02([lng, lat]: [number, number]) {
+    lng = +lng;
     lat = +lat;
-    if (this.outOfChina([long, lat])) {
-      return [long, lat];
+    if (this.outOfChina([lng, lat])) {
+      return [lng, lat];
     } else {
-      let dLat = this.transformLat([long - 105.0, lat - 35.0]);
-      let dLong = this.transformLong([long - 105.0, lat - 35.0]);
+      let dLat = this.transformLat([lng - 105.0, lat - 35.0]);
+      let dLong = this.transformLong([lng - 105.0, lat - 35.0]);
       const radLat = (lat / 180.0) * Math.PI;
       let magic = Math.sin(radLat);
       magic = 1 - this.ee * magic * magic;
@@ -102,7 +102,7 @@ export class CoordTransform {
       dLong =
         (dLong * 180.0) / ((this.a / sqrtMagic) * Math.cos(radLat) * Math.PI);
       const mgLat = lat + dLat;
-      const mgLong = long + dLong;
+      const mgLong = lng + dLong;
       return [mgLong, mgLat];
     }
   }
@@ -120,10 +120,12 @@ export class CoordTransform {
    * @param {string} from - 初始坐标系
    * @param {string} to - 目标坐标系
    * @param {Polygon} polygon - 要转换坐标的polygon对象(esri json)
-   * @return {Object} 坐标转换完成后的polygon对象
+   * @return {Polygon} 坐标转换完成后的polygon对象
    * */
   public static transformPolygon(from: string, to: string, polygon: Polygon) {
-    polygon.rings = polygon.rings.map(ring => {
+    let transformed: Polygon = new Polygon();
+    transformed.spatialReference = polygon.spatialReference;
+    transformed.rings = polygon.rings.map(ring => {
       return ring.map(point => {
         if (from.toLowerCase() == "gcj02" && to.toLowerCase() == "wgs84") {
           return this.gcj02ToWgs84([point[0], point[1]]);
@@ -132,13 +134,13 @@ export class CoordTransform {
         }
       });
     });
-    return polygon;
+    return transformed;
   }
 
   private static transformLong([lng, lat]: [number, number]) {
-    var lat = +lat;
-    var lng = +lng;
-    var ret = 300.0 + lng + 2.0 * lat + 0.1 * lng * lng + 0.1 * lng * lat + 0.1 * Math.sqrt(Math.abs(lng));
+    lat = +lat;
+    lng = +lng;
+    let ret = 300.0 + lng + 2.0 * lat + 0.1 * lng * lng + 0.1 * lng * lat + 0.1 * Math.sqrt(Math.abs(lng));
     ret += (20.0 * Math.sin(6.0 * lng * Math.PI) + 20.0 * Math.sin(2.0 * lng * Math.PI)) * 2.0 / 3.0;
     ret += (20.0 * Math.sin(lng * Math.PI) + 40.0 * Math.sin(lng / 3.0 * Math.PI)) * 2.0 / 3.0;
     ret += (150.0 * Math.sin(lng / 12.0 * Math.PI) + 300.0 * Math.sin(lng / 30.0 * Math.PI)) * 2.0 / 3.0;
@@ -146,9 +148,9 @@ export class CoordTransform {
   }
 
   private static transformLat([lng, lat]: [number, number]) {
-    var lat = +lat;
-    var lng = +lng;
-    var ret = -100.0 + 2.0 * lng + 3.0 * lat + 0.2 * lat * lat + 0.1 * lng * lat + 0.2 * Math.sqrt(Math.abs(lng));
+    lat = +lat;
+    lng = +lng;
+    let ret = -100.0 + 2.0 * lng + 3.0 * lat + 0.2 * lat * lat + 0.1 * lng * lat + 0.2 * Math.sqrt(Math.abs(lng));
     ret += (20.0 * Math.sin(6.0 * lng * Math.PI) + 20.0 * Math.sin(2.0 * lng * Math.PI)) * 2.0 / 3.0;
     ret += (20.0 * Math.sin(lat * Math.PI) + 40.0 * Math.sin(lat / 3.0 * Math.PI)) * 2.0 / 3.0;
     ret += (160.0 * Math.sin(lat / 12.0 * Math.PI) + 320 * Math.sin(lat * Math.PI / 30.0)) * 2.0 / 3.0;

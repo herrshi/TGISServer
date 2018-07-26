@@ -1,6 +1,7 @@
+import json
+
 from geographiclib.geodesic import Geodesic
 from shapely.geometry import LineString
-import json
 
 
 def _get_geodesic_length(point1: list, point2: list) -> float:
@@ -10,10 +11,68 @@ def _get_geodesic_length(point1: list, point2: list) -> float:
     return distance
 
 
+def _validate_point(point) -> bool:
+    if not isinstance(point, list):
+        return False
+    elif len(point) != 2:
+        return False
+    elif not isinstance(point[0], float) or not isinstance(point[1], float):
+        return False
+
+    return True
+
+
+def _validate_polyline(line) -> bool:
+    if not isinstance(line, dict):
+        return False
+
+    paths = line.get('paths')
+    if not isinstance(paths, list) or len(paths) < 1:
+        return False
+
+    for path in paths:
+        if not isinstance(path, list) or len(path) < 2:
+            return False
+        for point in path:
+            if not _validate_point(point):
+                return False
+
+    return True
+
+
+def _validate_lengths_param(params: dict) -> dict:
+    calculation_type = params.get('calculationType') or 'geodesic'
+    if calculation_type not in {'geodesic', 'planar'}:
+        return {'error': {'code': 400, 'message': 'calculationType参数错误'}}
+
+    lines_string = params.get('polylines')
+    try:
+        lines = json.loads(lines_string)
+    except json.JSONDecodeError:
+        return {'error': {'code': 400, 'message': 'polylines参数错误', 'details': '非法json格式'}}
+
+    if not isinstance(lines, list):
+        return {'error': {'code': 400, 'message': '参数错误', 'details': 'polylines必须为list'}}
+    elif len(lines) < 1:
+        return {'error': {'code': 400, 'message': '参数错误', 'details': 'polylines至少有一个元素'}}
+
+    for line in lines:
+        if not _validate_polyline(line):
+            return {'error': {'code': 400, 'message': '参数错误', 'details': 'polyline格式错误'}}
+
+    return {'result': 'success'}
+
+
 def lengths(params: dict) -> str:
+    validate_result = _validate_lengths_param(params)
+    if validate_result['result'] != 'success':
+        return json.dumps(validate_result)
+
     lines_string = params.get('polylines')
     calculation_type = params.get('calculationType') or 'geodesic'
+
     lines = json.loads(lines_string)
+
     lines_length = []
     for line in lines:
         paths = line.get('paths')
@@ -42,3 +101,11 @@ def lengths(params: dict) -> str:
     result = {'lengths': lines_length}
     return json.dumps(result)
 
+
+def areas(params: dict) -> str:
+    polygons_string = params.get('polygons')
+    calculation_type = params.get('calculationType') or 'geodesic'
+    polygons = json.loads(polygons_string)
+    for polygon in polygons:
+        rings = polygon.get('rings')
+    return '111'

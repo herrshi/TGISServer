@@ -7,6 +7,10 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
         constructor(divName) {
             this.drawLayer = new GraphicsLayer();
             this.rootDiv = divName;
+            // if (window.config.GIS_PROXY) {
+            //   //允许跨域
+            //   esriConfig.request.proxyUrl = window.config.GIS_PROXY;
+            // }
         }
         createMap() {
             return new Promise(resolve => {
@@ -40,6 +44,14 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
                 });
             });
         }
+        /**
+         * @param {string} drawType - 绘制类型
+         *   point
+         *   polyline
+         *   polygon
+         *   circle
+         * @return {Promise} - 返回绘制的Geometry
+         * */
         startDraw(drawType) {
             return new Promise(resolve => {
                 const action = this.draw.create(drawType, {
@@ -98,20 +110,26 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
                         //并通过promise返回geometry对象
                         this.drawLayer.add(graphic);
                         let resultGeometry = graphic.geometry;
-                        //先把墨卡托转到wgs
+                        //投影坐标=>地理坐标
                         if (this.mapView.spatialReference.isWebMercator) {
                             resultGeometry = webMercatorUtils.webMercatorToGeographic(graphic.geometry);
                         }
-                        console.log(resultGeometry.toJSON());
-                        //纠偏
-                        resultGeometry = coordTransform_1.CoordTransform.transformPolygon("gcj02", "wgs84", resultGeometry);
-                        resolve(resultGeometry.toJSON());
+                        switch (drawType) {
+                            case "polygon":
+                                //纠偏, gcj02=>wgs84
+                                const transformed = coordTransform_1.CoordTransform.transformPolygon("gcj02", "wgs84", resultGeometry);
+                                resolve(transformed);
+                                break;
+                        }
                     }
                     else {
                         this.mapView.graphics.add(graphic);
                     }
                 };
             });
+        }
+        clearDraw() {
+            this.drawLayer.removeAll();
         }
     }
     exports.Map = Map;

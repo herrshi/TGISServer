@@ -11,9 +11,9 @@ import Draw = require("esri/views/2d/draw/Draw");
 import Graphic = require("esri/Graphic");
 import webMercatorUtils = require("esri/geometry/support/webMercatorUtils");
 import Polygon = require("esri/geometry/Polygon");
+import Geometry = require("esri/geometry/Geometry");
 
-
-import {CoordTransform} from "../map/coordTransform"
+import { CoordTransform } from "../map/coordTransform";
 
 interface DrawEvent {
   vertices: number[][];
@@ -28,6 +28,11 @@ export class Map {
 
   constructor(divName: string) {
     this.rootDiv = divName;
+
+    // if (window.config.GIS_PROXY) {
+    //   //允许跨域
+    //   esriConfig.request.proxyUrl = window.config.GIS_PROXY;
+    // }
   }
 
   public createMap() {
@@ -68,7 +73,15 @@ export class Map {
     });
   }
 
-  public startDraw(drawType: string) {
+  /**
+   * @param {string} drawType - 绘制类型
+   *   point
+   *   polyline
+   *   polygon
+   *   circle
+   * @return {Promise} - 返回绘制的Geometry
+   * */
+  public startDraw(drawType: string): Promise<Geometry> {
     return new Promise(resolve => {
       const action = this.draw.create(drawType, {
         mode: "click"
@@ -132,19 +145,33 @@ export class Map {
           //并通过promise返回geometry对象
           this.drawLayer.add(graphic);
 
-          let resultGeometry = graphic.geometry;
-          //先把墨卡托转到wgs
+          let resultGeometry: Geometry = graphic.geometry;
+          //投影坐标=>地理坐标
           if (this.mapView.spatialReference.isWebMercator) {
-            resultGeometry = webMercatorUtils.webMercatorToGeographic(graphic.geometry);
+            resultGeometry = webMercatorUtils.webMercatorToGeographic(
+              graphic.geometry
+            );
           }
-          console.log(resultGeometry.toJSON());
-          //纠偏
-          resultGeometry = CoordTransform.transformPolygon("gcj02", "wgs84", <Polygon>resultGeometry);
-          resolve(resultGeometry.toJSON());
+
+          switch (drawType) {
+            case "polygon":
+              //纠偏, gcj02=>wgs84
+              const transformed: Polygon = CoordTransform.transformPolygon(
+                "gcj02",
+                "wgs84",
+                resultGeometry as Polygon
+              );
+              resolve(transformed);
+              break;
+          }
         } else {
           this.mapView.graphics.add(graphic);
         }
       };
     });
+  }
+
+  public clearDraw() {
+    this.drawLayer.removeAll();
   }
 }

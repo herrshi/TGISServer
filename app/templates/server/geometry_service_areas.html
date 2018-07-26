@@ -161,10 +161,30 @@
       <div id="mapViewDiv" class="card-body"></div>
     </div>
 
-    <!--Other div-->
+    <!--params & request & response div-->
     <div class="col-lg card">
       <div class="card-body">
+        <form>
+          <!--polygons param-->
+          <label for="txtPolygons">Polygons:</label>
+          <textarea type="text" id="txtPolygons" class="form-control" rows="4" placeholder="请输入参数或在地图上点击"></textarea>
 
+          <!--calculationType params-->
+          <div class="md-form shadow-textarea">
+            <select id="selCalculationType" class="mdb-select colorful-select dropdown-primary">
+              <option value="geodesic">geodesic - 大地测量</option>
+              <option value="planar">planar - 平面</option>
+            </select>
+            <label for="selCalculationType">calculationType:</label>
+          </div>
+
+          <!--Actions-->
+          <div class="text-center">
+            <button id="btnAddNewPolygon" type="button" class="btn btn-info btn-rounded disabled">新  增</button>
+            <button id="btnClearData" type="button" class="btn btn-info btn-rounded disabled">清  除</button>
+            <button id="btnOpenLink" type="button" class="btn btn-info btn-rounded" disabled>打开请求地址</button>
+          </div>
+        </form>
       </div>
     </div>
 
