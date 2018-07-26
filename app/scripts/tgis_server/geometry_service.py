@@ -103,9 +103,23 @@ def lengths(params: dict) -> str:
 
 
 def areas(params: dict) -> str:
+    geodesic = Geodesic.WGS84
     polygons_string = params.get('polygons')
     calculation_type = params.get('calculationType') or 'geodesic'
     polygons = json.loads(polygons_string)
+
+    polygons_area = []
+    polygons_lengths = []
     for polygon in polygons:
+        p = geodesic.Polygon()
         rings = polygon.get('rings')
-    return '111'
+        for ring in rings:
+            for point in ring:
+                p.AddPoint(point[0], point[1])
+        num, length, area = p.Compute()
+        length = round(length, 4)
+        area = round(area, 4)
+        polygons_lengths.append(length)
+        polygons_area.append(area)
+    result = {'areas': polygons_area, 'lengths': polygons_lengths}
+    return json.dumps(result)
