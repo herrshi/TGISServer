@@ -3,6 +3,7 @@ define(["require", "exports", "../map/map"], function (require, exports, map_1) 
     Object.defineProperty(exports, "__esModule", { value: true });
     const btnAddNewPolygon = $("#btnAddNewPolygon");
     const btnClear = $("#btnClearData");
+    const btnOpenLink = $("#btnOpenLink");
     const txtPolygons = $("#txtPolygons");
     const txtRequest = $("#txtRequestUrl");
     const txtResponse = $("#txtResponse");
@@ -35,6 +36,7 @@ define(["require", "exports", "../map/map"], function (require, exports, map_1) 
         polygons = [];
         txtPolygons.val("");
         btnClear.addClass("disabled");
+        btnOpenLink.addClass("disabled");
     });
     function getAreas() {
         const polygons = txtPolygons.val().trim();
@@ -46,6 +48,7 @@ define(["require", "exports", "../map/map"], function (require, exports, map_1) 
             const requestUrl = window.route.GEOMETRY_SERVICE_AREAS + "?" + requestParam;
             fetch(requestUrl).then(response => {
                 txtRequest.val(decodeURIComponent(response.url));
+                btnOpenLink.removeClass("disabled");
                 return response.json();
             }).then(data => {
                 txtResponse.val(JSON.stringify(data));

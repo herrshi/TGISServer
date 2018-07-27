@@ -2,6 +2,7 @@ import { Map } from "../map/map";
 
 const btnAddNewPolygon = $("#btnAddNewPolygon");
 const btnClear = $("#btnClearData");
+const btnOpenLink = $("#btnOpenLink");
 const txtPolygons = $("#txtPolygons");
 const txtRequest = $("#txtRequestUrl");
 const txtResponse = $("#txtResponse");
@@ -40,6 +41,7 @@ btnClear.on("click", () => {
   polygons = [];
   txtPolygons.val("");
   btnClear.addClass("disabled");
+  btnOpenLink.addClass("disabled");
 });
 
 function getAreas():void {
@@ -53,6 +55,7 @@ function getAreas():void {
 
     fetch(requestUrl).then(response => {
       txtRequest.val(decodeURIComponent(response.url));
+      btnOpenLink.removeClass("disabled");
       return response.json();
     }).then(data => {
       txtResponse.val(JSON.stringify(data));
