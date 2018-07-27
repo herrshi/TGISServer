@@ -4,6 +4,8 @@ define(["require", "exports", "../map/map"], function (require, exports, map_1) 
     const btnAddNewPolygon = $("#btnAddNewPolygon");
     const btnClear = $("#btnClearData");
     const txtPolygons = $("#txtPolygons");
+    const txtRequest = $("#txtRequestUrl");
+    const txtResponse = $("#txtResponse");
     //存放polygon的json对象的array
     let polygons = [];
     const map = new map_1.Map("mapViewDiv");
@@ -25,6 +27,7 @@ define(["require", "exports", "../map/map"], function (require, exports, map_1) 
             txtPolygons.val(JSON.stringify(polygons));
             //清除按钮可用
             btnClear.removeClass("disabled");
+            getAreas();
         });
     });
     btnClear.on("click", () => {
@@ -33,5 +36,21 @@ define(["require", "exports", "../map/map"], function (require, exports, map_1) 
         txtPolygons.val("");
         btnClear.addClass("disabled");
     });
+    function getAreas() {
+        const polygons = txtPolygons.val().trim();
+        if (polygons != "") {
+            const requestParam = $.param({
+                polygons: polygons,
+                calculationType: $("#selCalculationType").val()
+            });
+            const requestUrl = window.route.GEOMETRY_SERVICE_AREAS + "?" + requestParam;
+            fetch(requestUrl).then(response => {
+                txtRequest.val(decodeURIComponent(response.url));
+                return response.json();
+            }).then(data => {
+                txtResponse.val(JSON.stringify(data));
+            });
+        }
+    }
 });
 //# sourceMappingURL=geometry_service_areas.js.map

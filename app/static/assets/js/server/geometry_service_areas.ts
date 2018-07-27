@@ -3,6 +3,8 @@ import { Map } from "../map/map";
 const btnAddNewPolygon = $("#btnAddNewPolygon");
 const btnClear = $("#btnClearData");
 const txtPolygons = $("#txtPolygons");
+const txtRequest = $("#txtRequestUrl");
+const txtResponse = $("#txtResponse");
 
 //存放polygon的json对象的array
 let polygons: Array<any> = [];
@@ -28,6 +30,8 @@ btnAddNewPolygon.on("click", () => {
 
     //清除按钮可用
     btnClear.removeClass("disabled");
+
+    getAreas();
   });
 });
 
@@ -37,3 +41,21 @@ btnClear.on("click", () => {
   txtPolygons.val("");
   btnClear.addClass("disabled");
 });
+
+function getAreas():void {
+  const polygons: string = (<string>txtPolygons.val()).trim();
+  if (polygons != "") {
+    const requestParam: string = $.param({
+      polygons: polygons,
+      calculationType: $("#selCalculationType").val()
+    });
+    const requestUrl:string = (<any>window).route.GEOMETRY_SERVICE_AREAS + "?" + requestParam;
+
+    fetch(requestUrl).then(response => {
+      txtRequest.val(decodeURIComponent(response.url));
+      return response.json();
+    }).then(data => {
+      txtResponse.val(JSON.stringify(data));
+    });
+  }
+}

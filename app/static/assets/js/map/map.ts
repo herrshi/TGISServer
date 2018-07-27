@@ -47,7 +47,7 @@ export class Map {
     }
   }
 
-  public createMap() {
+  public createMap(): Promise<void> {
     return new Promise(resolve => {
       const basemap = new Basemap({
         baseLayers: [
