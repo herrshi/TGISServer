@@ -20,7 +20,8 @@
       GIS_PROXY: "{{ config['GIS_PROXY'] }}"
     };
     window.route = {
-      GEOMETRY_SERVICE_LENGTHS: "{{ url_for('tgis_server.geometry_service_lengths') }}"
+      GEOMETRY_SERVICE_LENGTHS: "{{ url_for('tgis_server.geometry_service_lengths') }}",
+      GEOMETRY_SERVICE_AREAS: "{{ url_for('tgis_server.geometry_service_areas') }}"
     };
   </script>
 {% endblock %}

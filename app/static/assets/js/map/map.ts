@@ -10,14 +10,26 @@ import HomeWidget = require("esri/widgets/Home");
 import Draw = require("esri/views/2d/draw/Draw");
 import Graphic = require("esri/Graphic");
 import webMercatorUtils = require("esri/geometry/support/webMercatorUtils");
-import Polygon = require("esri/geometry/Polygon");
 import Geometry = require("esri/geometry/Geometry");
+import Polygon = require("esri/geometry/Polygon");
+import esriConfig = require("esri/config");
+
+
 
 import { CoordTransform } from "../map/coordTransform";
 
 interface DrawEvent {
   vertices: number[][];
   type: string;
+}
+
+export interface SpatialReferenceJson {
+  wkid: number;
+}
+
+export interface PolygonJson {
+  rings: Array<Array<Array<number>>>;
+  spatialReference: SpatialReferenceJson;
 }
 
 export class Map {
@@ -29,10 +41,10 @@ export class Map {
   constructor(divName: string) {
     this.rootDiv = divName;
 
-    // if (window.config.GIS_PROXY) {
-    //   //允许跨域
-    //   esriConfig.request.proxyUrl = window.config.GIS_PROXY;
-    // }
+    if ((<any>window).config.GIS_PROXY) {
+      //允许跨域
+      esriConfig.request.proxyUrl = (<any>window).config.GIS_PROXY;
+    }
   }
 
   public createMap() {
@@ -81,7 +93,7 @@ export class Map {
    *   circle
    * @return {Promise} - 返回绘制的Geometry
    * */
-  public startDraw(drawType: string): Promise<Geometry> {
+  public startDraw(drawType: string): Promise<PolygonJson> {
     return new Promise(resolve => {
       const action = this.draw.create(drawType, {
         mode: "click"
@@ -155,12 +167,9 @@ export class Map {
 
           switch (drawType) {
             case "polygon":
+              const polygon: PolygonJson = resultGeometry.toJSON();
               //纠偏, gcj02=>wgs84
-              const transformed: Polygon = CoordTransform.transformPolygon(
-                "gcj02",
-                "wgs84",
-                resultGeometry as Polygon
-              );
+              const transformed = CoordTransform.transformPolygon("gcj02", "wgs84", polygon);
               resolve(transformed);
               break;
           }

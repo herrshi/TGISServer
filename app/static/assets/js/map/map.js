@@ -1,16 +1,16 @@
 /// <amd-dependency path="esri/core/tsSupport/declareExtendsHelper" name="__extends" />
 /// <amd-dependency path="esri/core/tsSupport/decorateHelper" name="__decorate" />
-define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/core/tsSupport/decorateHelper", "esri/Map", "esri/views/MapView", "esri/Basemap", "esri/layers/TileLayer", "esri/layers/GraphicsLayer", "esri/widgets/Home", "esri/views/2d/draw/Draw", "esri/Graphic", "esri/geometry/support/webMercatorUtils", "../map/coordTransform"], function (require, exports, __extends, __decorate, EsriMap, MapView, Basemap, TileLayer, GraphicsLayer, HomeWidget, Draw, Graphic, webMercatorUtils, coordTransform_1) {
+define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/core/tsSupport/decorateHelper", "esri/Map", "esri/views/MapView", "esri/Basemap", "esri/layers/TileLayer", "esri/layers/GraphicsLayer", "esri/widgets/Home", "esri/views/2d/draw/Draw", "esri/Graphic", "esri/geometry/support/webMercatorUtils", "esri/config", "../map/coordTransform"], function (require, exports, __extends, __decorate, EsriMap, MapView, Basemap, TileLayer, GraphicsLayer, HomeWidget, Draw, Graphic, webMercatorUtils, esriConfig, coordTransform_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Map {
         constructor(divName) {
             this.drawLayer = new GraphicsLayer();
             this.rootDiv = divName;
-            // if (window.config.GIS_PROXY) {
-            //   //允许跨域
-            //   esriConfig.request.proxyUrl = window.config.GIS_PROXY;
-            // }
+            if (window.config.GIS_PROXY) {
+                //允许跨域
+                esriConfig.request.proxyUrl = window.config.GIS_PROXY;
+            }
         }
         createMap() {
             return new Promise(resolve => {
@@ -116,8 +116,9 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
                         }
                         switch (drawType) {
                             case "polygon":
+                                const polygon = resultGeometry.toJSON();
                                 //纠偏, gcj02=>wgs84
-                                const transformed = coordTransform_1.CoordTransform.transformPolygon("gcj02", "wgs84", resultGeometry);
+                                const transformed = coordTransform_1.CoordTransform.transformPolygon("gcj02", "wgs84", polygon);
                                 resolve(transformed);
                                 break;
                         }

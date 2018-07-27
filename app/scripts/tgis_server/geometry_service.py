@@ -89,14 +89,14 @@ def lengths(params: dict) -> str:
                     path_length += segment_length
                     i = i + 1
                 # 长度保留两位小数
-                path_length = round(path_length, 4)
+                path_length = abs(round(path_length, 4))
                 lines_length.append(path_length)
         # 欧几里得长度
         elif calculation_type == 'planar':
             for path in paths:
                 line = LineString(path)
                 path_length = line.length
-                lines_length.append(path_length)
+                lines_length.append(abs(path_length))
 
     result = {'lengths': lines_length}
     return json.dumps(result)
@@ -115,10 +115,10 @@ def areas(params: dict) -> str:
         rings = polygon.get('rings')
         for ring in rings:
             for point in ring:
-                p.AddPoint(point[0], point[1])
+                p.AddPoint(point[1], point[0])
         num, length, area = p.Compute()
-        length = round(length, 4)
-        area = round(area, 4)
+        length = abs(round(length, 4))
+        area = abs(round(area, 4))
         polygons_lengths.append(length)
         polygons_area.append(area)
     result = {'areas': polygons_area, 'lengths': polygons_lengths}

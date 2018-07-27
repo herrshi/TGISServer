@@ -2,6 +2,7 @@
   <dictionary name="herrs">
     <words>
       <w>basemap</w>
+      <w>wkid</w>
     </words>
   </dictionary>
 </component>
