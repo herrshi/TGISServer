@@ -1,6 +1,7 @@
 import { Map } from "../map/map";
 
 const btnAddNewPolygon = $("#btnAddNewPolygon");
+const btnCalculate = $("#btnCalculate");
 const btnClear = $("#btnClearData");
 const btnOpenLink = $("#btnOpenLink");
 const txtPolygons = $("#txtPolygons");
@@ -29,19 +30,30 @@ btnAddNewPolygon.on("click", () => {
     polygons.push(polygon);
     txtPolygons.val(JSON.stringify(polygons));
 
+    //计算按钮可用
+    btnCalculate.removeClass("disabled");
     //清除按钮可用
     btnClear.removeClass("disabled");
-
-    getAreas();
   });
+});
+
+btnCalculate.on("click", () => {
+  getAreas();
 });
 
 btnClear.on("click", () => {
   map.clearDraw();
   polygons = [];
   txtPolygons.val("");
+  txtRequest.val("");
+  txtResponse.val("");
+  btnCalculate.addClass("disabled");
   btnClear.addClass("disabled");
   btnOpenLink.addClass("disabled");
+});
+
+btnOpenLink.on("click", () => {
+  window.open(txtRequest.val() as string);
 });
 
 function getAreas():void {
@@ -54,6 +66,7 @@ function getAreas():void {
     const requestUrl:string = (<any>window).route.GEOMETRY_SERVICE_AREAS + "?" + requestParam;
 
     fetch(requestUrl).then(response => {
+      //显示rest地址
       txtRequest.val(decodeURIComponent(response.url));
       btnOpenLink.removeClass("disabled");
       return response.json();

@@ -1,0 +1,93 @@
+{% extends "nav.html" %}
+
+{% block main %}
+  <section class="my-5">
+    <!--Heading-->
+    <h2 class="h1-responsive font-weight-bold text-center my-5">网络服务</h2>
+    <!--Description-->
+    <p class="lead text-center w-responsive mx-auto mb-5">网络服务资源表示使用TGISServer发布的网络分析服务。提供各种网络服务和其调用信息，例如路由、最近设施和服务区域等。</p>
+
+    <!-- Grid row -->
+    <div class="row my-5">
+      <!-- Grid column -->
+      <div class="col-md-4 mb-md-0 mb-5">
+        <!-- Grid row -->
+        <div class="row">
+          <!-- Grid column -->
+          <div class="col-lg-2 col-md-3 col-2">
+            <i class="fas fa-angle-double-right blue-text fa-2x"></i>
+          </div>
+          <!-- /Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-lg-10 col-md-9 col-10">
+            <h4 class="font-weight-bold">路由</h4>
+            <p>计算多点之间的最短路径。</p>
+            <a href="{{ url_for('tgis_server.network_service_route') }}"
+               class="btn btn-blue btn-sm" role="button">
+              <i class="fas fa-sign-in-alt fa-2x"></i></a>
+          </div>
+          <!-- /Grid column -->
+        </div>
+        <!-- /Grid row -->
+      </div>
+      <!-- /Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-4 mb-md-0 mb-5">
+        <!-- Grid row -->
+        <div class="row">
+          <!-- Grid column -->
+          <div class="col-lg-2 col-md-3 col-2">
+            <i class="fas fa-angle-double-right pink-text fa-2x"></i>
+          </div>
+          <!-- /Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-lg-10 col-md-9 col-10">
+            <h4 class="font-weight-bold">最近设施</h4>
+            <p class="grey-text">给定一批事故点和一批设施点，寻找每个事故点的最近设施。</p>
+            <a href="{{ url_for('tgis_server.geometry_service_lengths') }}"
+               class="btn btn-pink btn-sm disabled" role="button">
+              <i class="fas fa-sign-in-alt fa-2x"></i>
+            </a>
+          </div>
+          <!-- /Grid column -->
+        </div>
+        <!-- /Grid row -->
+      </div>
+      <!-- /Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-4">
+        <!-- Grid row -->
+        <div class="row">
+          <!-- Grid column -->
+          <div class="col-lg-2 col-md-3 col-2">
+            <i class="fa fa-angle-double-right purple-text fa-2x"></i>
+          </div>
+          <!-- /Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-lg-10 col-md-9 col-10">
+            <h4 class="font-weight-bold">服务区域</h4>
+            <p class="grey-text">给定一批设施点，为每个设施点生成不同行程时间的服务区域</p>
+            <a class="btn btn-purple btn-sm disabled" role="button"><i class="fas fa-sign-in-alt fa-2x"></i></a>
+          </div>
+          <!-- /Grid column -->
+        </div>
+        <!-- /Grid row -->
+      </div>
+      <!-- /Grid column -->
+    </div>
+    <!-- /Grid row -->
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script type="text/javascript">
+    $('#menu-server').addClass('active');
+    $('#menu-item-network-service').addClass('current-menu-item');
+  </script>
+{% endblock %}

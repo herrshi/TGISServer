@@ -83,7 +83,7 @@
   ]
  }
 ]</code></pre>
-                <p>第一个多边形的rings属性包含两条路径，代表一个有"洞"的多边形。</p>
+                <p>第一个多边形的rings属性包含两条路径，代表一个有"孔"的多边形。</p>
                 <p>第二个多边形的rings属性只有一条路径，代表一个封闭的多边形</p>
               </section>
             </td>
@@ -167,7 +167,8 @@
         <form>
           <!--polygons param-->
           <label for="txtPolygons">Polygons:</label>
-          <textarea type="text" id="txtPolygons" class="form-control" rows="4" placeholder="请输入参数或在地图上点击"></textarea>
+          <textarea type="text" id="txtPolygons" class="form-control" rows="4"
+                    placeholder="请输入参数或点击新增按钮在地图上绘制，然后点击计算按钮"></textarea>
 
           <!--calculationType params-->
           <div class="md-form shadow-textarea">
@@ -179,10 +180,11 @@
           </div>
 
           <!--Actions-->
-          <div class="text-center">
-            <button id="btnAddNewPolygon" type="button" class="btn btn-info btn-rounded disabled">新  增</button>
-            <button id="btnClearData" type="button" class="btn btn-info btn-rounded disabled">清  除</button>
-            <button id="btnOpenLink" type="button" class="btn btn-info btn-rounded" disabled>打开请求地址</button>
+          <div class="text-center btn-group d-flex justify-content-center">
+            <button id="btnAddNewPolygon" type="button" class="btn btn-indigo disabled">新 增</button>
+            <button id="btnCalculate" type="button" class="btn btn-indigo disabled">计 算</button>
+            <button id="btnClearData" type="button" class="btn btn-indigo disabled">清 除</button>
+            <button id="btnOpenLink" type="button" class="btn btn-indigo disabled">打开请求地址</button>
           </div>
 
           <!--Request-->

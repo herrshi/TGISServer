@@ -34,3 +34,11 @@ def geometry_service_areas():
         return areas(request.args)
 
 
+@tgis_server.route('/TGISServer/NetworkService/')
+def network_service():
+    return render_template('server/network_service.html')
+
+
+@tgis_server.route('/TGISServer/NetworkService/route')
+def network_service_route():
+    return render_template('server/network_service_route.html')

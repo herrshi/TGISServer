@@ -1,0 +1,125 @@
+{% extends "api.html" %}
+
+{% block api_title %}
+  <h4 class="font-weight-bold">路由</h4>
+{% endblock %}
+
+{% block api_panel %}
+  <!--url-->
+  <section class="my-2">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-3">URL:</div>
+          <div class="col-9">{{ url_for('tgis_server.network_service_route') }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--description-->
+  <section class="my-2">
+    <div class="card">
+      <div class="card-body">
+        <p><span class="user-text">route</span>计算多个途经点之间的最短路径。</p>
+        <p>此操作的参数在以下参数表中定义:</p>
+      </div>
+    </div>
+  </section>
+
+  <!--params-->
+  <section class="my-2">
+    <div class="card">
+      <div class="card-body">
+        <!--Table-->
+        <table class="table">
+
+          <!--Table head-->
+          <thead class="blue-grey lighten-4">
+          <tr>
+            <th class="h4">参数</th>
+            <th class="h4">说明</th>
+          </tr>
+          </thead>
+          <!--/Table head-->
+
+          <!--Table body-->
+          <tbody>
+          <tr>
+            <td>
+              <span class="user-text">stops</span>
+            </td>
+            <td class="blockquote pt-0">
+              <p>用于定义路径的停靠点。至少需要两个点。</p>
+              <p>简单结构: </p>
+              <section class="panel">
+                <pre><code>x1,y1; x2,y2; ...; xn, yn</code></pre>
+              </section>
+
+              <p>示例：</p>
+              <section class="panel">
+                <pre><code><span class="blue-text">121.433</span>, <span class="blue-text">31.242</span>; <span class="blue-text">121.45</span>, <span class="blue-text">31.235</span></code></pre>
+
+              </section>
+
+
+            </td>
+          </tr>
+
+          </tbody>
+          <!--Table body-->
+
+        </table>
+        <!--Table-->
+      </div>
+    </div>
+  </section>
+
+  <!--response syntax-->
+  <section class="my-2">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">JSON响应语法</h4>
+        <p>JSON结构:</p>
+        <section class="panel">
+                 <pre><code>{
+  <span class="red-text">"lengths"</span> : [ &lt;length1&gt;, &lt;length2&gt;, ..., &lt;lengthN&gt; ],
+  <span class="red-text">"areas"</span> : [ &lt;area1&gt;, &lt;area2&gt;, ..., &lt;areaN&gt; ]
+}</code></pre>
+        </section>
+
+        <p>示例:</p>
+        <section class="panel">
+    <pre><code>[
+  {
+    <span class="red-text">"areas"</span> :
+    [
+      <span class="blue-text">2150.340979272913</span>,
+      <span class="blue-text">2800449.740201426</span>,
+    ]
+  },
+  {
+    <span class="red-text">"length"</span> :
+    [
+      <span class="blue-text">222.93213167603818</span>,
+      <span class="blue-text">264.5927746444603</span>,
+    ]
+  }
+]</code></pre>
+        </section>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block sample_panel %}
+
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script type="text/javascript">
+    $('#menu-server').addClass('active');
+    $('#menu-item-network-service').addClass('current-menu-item');
+  </script>
+{% endblock %}
