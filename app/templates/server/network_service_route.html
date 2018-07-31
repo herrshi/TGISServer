@@ -82,30 +82,67 @@
         <h4 class="card-title">JSON响应语法</h4>
         <p>JSON结构:</p>
         <section class="panel">
-                 <pre><code>{
-  <span class="red-text">"lengths"</span> : [ &lt;length1&gt;, &lt;length2&gt;, ..., &lt;lengthN&gt; ],
-  <span class="red-text">"areas"</span> : [ &lt;area1&gt;, &lt;area2&gt;, ..., &lt;areaN&gt; ]
+          <pre><code>{
+  <span class="red-text">"routes"</span>: {
+    <span class="red-text">"spatialReference"</span>: { &lt;spatialReference&gt; }
+    <span class="red-text">"features"</span>: [
+      {
+        <span class="red-text">"attributes"</span>: {
+          <span class="red-text">"&lt;field1&gt;"</span>: &lt;value1&gt;,
+          <span class="red-text">"&lt;field2&gt;"</span>: &lt;value2&gt;
+        },
+        <span class="red-text">"geometry"</span>: { &lt;polyline1&gt; }
+      },
+      {
+        <span class="red-text">"attributes"</span>: {
+          <span class="red-text">"&lt;field1&gt;"</span>: &lt;value1&gt;,
+          <span class="red-text">"&lt;field2&gt;"</span>: &lt;value2&gt;
+        },
+        <span class="red-text">"geometry"</span>: { &lt;polyline2&gt; }
+      }
+    ]
+  }
 }</code></pre>
         </section>
 
         <p>示例:</p>
         <section class="panel">
-    <pre><code>[
-  {
-    <span class="red-text">"areas"</span> :
-    [
-      <span class="blue-text">2150.340979272913</span>,
-      <span class="blue-text">2800449.740201426</span>,
-    ]
-  },
-  {
-    <span class="red-text">"length"</span> :
-    [
-      <span class="blue-text">222.93213167603818</span>,
-      <span class="blue-text">264.5927746444603</span>,
+    <pre><code>{
+  <span class="red-text">"routes"</span>: {
+    <span class="red-text">"spatialReference"</span>: { <span class="red-text">"wkid"</span>: <span class="blue-text">4326</span> }
+    <span class="red-text">"features"</span>: [
+      {
+        <span class="red-text">"attributes"</span>: {
+          <span class="red-text">"Total_Meters"</span>: <span class="blue-text">16446.0849</span>
+        },
+        <span class="red-text">"geometry"</span>: {
+          <span class="red-text">"paths": </span>[[
+            [<span class="blue-text">121.4332256</span>, <span class="blue-text">31.2422250</span>],
+            [<span class="blue-text">121.4342662</span>, <span class="blue-text">31.2411944</span>],
+            [<span class="blue-text">121.4354110</span>, <span class="blue-text">31.2398113</span>],
+            [<span class="blue-text">121.4359094</span>, <span class="blue-text">31.2390895</span>],
+            [<span class="blue-text">121.4363718</span>, <span class="blue-text">31.2382418</span>],
+            [<span class="blue-text">121.4373634</span>, <span class="blue-text">31.2365467</span>],
+            [<span class="blue-text">121.4375268</span>, <span class="blue-text">31.2362539</span>],
+            [<span class="blue-text">121.4377971</span>, <span class="blue-text">31.2358252</span>],
+            [<span class="blue-text">121.4380415</span>, <span class="blue-text">31.2354499</span>],
+            [<span class="blue-text">121.4381817</span>, <span class="blue-text">31.2352723</span>],
+            [<span class="blue-text">121.4392163</span>, <span class="blue-text">31.2343233</span>],
+            [<span class="blue-text">121.4428474</span>, <span class="blue-text">31.2356994</span>],
+            [<span class="blue-text">121.4434592</span>, <span class="blue-text">31.2350192</span>],
+            [<span class="blue-text">121.4440774</span>, <span class="blue-text">31.2343777</span>],
+            [<span class="blue-text">121.4451854</span>, <span class="blue-text">31.2332565</span>],
+            [<span class="blue-text">121.4453038</span>, <span class="blue-text">31.2331536</span>],
+            [<span class="blue-text">121.4474478</span>, <span class="blue-text">31.2340976</span>],
+            [<span class="blue-text">121.4491054</span>, <span class="blue-text">31.2346134</span>],
+            [<span class="blue-text">121.4501131</span>, <span class="blue-text">31.2348306</span>],
+            [<span class="blue-text">121.4502181</span>, <span class="blue-text">31.2348554</span>]
+          ]]
+        }
+      }
     ]
   }
-]</code></pre>
+}</code></pre>
         </section>
       </div>
     </div>
@@ -113,13 +150,28 @@
 {% endblock %}
 
 {% block sample_panel %}
+  <div class="row" style="height: 600px">
+    <!--Map div-->
+    <div class="col-lg card py-3 px-3 mr-0 mr-lg-3 mb-3 mb-lg-0">
+      <div id="mapViewDiv" class="card-body"></div>
+    </div>
 
+    <!--params & request & response div-->
+    <div class="col-lg card">
+      <div class="card-body">
+
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 {% block scripts %}
   {{ super() }}
+
   <script type="text/javascript">
     $('#menu-server').addClass('active');
     $('#menu-item-network-service').addClass('current-menu-item');
   </script>
+
+  <script>require(["{{ url_for('.static', filename='assets/js/server/network_service_route.js') }}"]);</script>
 {% endblock %}
