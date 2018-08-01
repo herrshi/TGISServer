@@ -1,4 +1,4 @@
-import { Map } from "../map/map";
+import { Map, PolygonJson } from "../map/map";
 
 const btnAddNewPolygon = $("#btnAddNewPolygon");
 const btnCalculate = $("#btnCalculate");
@@ -19,7 +19,7 @@ map.createMap().then(() => {
 btnAddNewPolygon.on("click", () => {
   map.startDraw("polygon").then(polygon => {
     //保留6位小数
-    polygon.rings.forEach(ring => {
+    (polygon as PolygonJson).rings.forEach(ring => {
       ring.forEach(point => {
         point[0] = Number(Number(point[0]).toFixed(6));
         point[1] = Number(Number(point[1]).toFixed(6));

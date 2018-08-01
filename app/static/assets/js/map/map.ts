@@ -11,20 +11,29 @@ import Draw = require("esri/views/2d/draw/Draw");
 import Graphic = require("esri/Graphic");
 import webMercatorUtils = require("esri/geometry/support/webMercatorUtils");
 import Geometry = require("esri/geometry/Geometry");
-import Polygon = require("esri/geometry/Polygon");
 import esriConfig = require("esri/config");
-
-
 
 import { CoordTransform } from "../map/coordTransform";
 
 interface DrawEvent {
   vertices: number[][];
+  coordinates: number[];
   type: string;
 }
 
 export interface SpatialReferenceJson {
   wkid: number;
+}
+
+export interface PointJson {
+  x: number;
+  y: number;
+  spatialReference: SpatialReferenceJson;
+}
+
+export interface PolylineJson {
+  paths: Array<Array<Array<number>>>;
+  spatialReference: SpatialReferenceJson;
 }
 
 export interface PolygonJson {
@@ -91,65 +100,102 @@ export class Map {
    *   polyline
    *   polygon
    *   circle
+   *   rectangle
+   *   ellipse
    * @return {Promise} - 返回绘制的Geometry
    * */
-  public startDraw(drawType: string): Promise<PolygonJson> {
+  public startDraw(drawType: string): Promise<any> {
+    drawType = drawType.toLowerCase();
+
     return new Promise(resolve => {
       const action = this.draw.create(drawType, {
         mode: "click"
       });
 
-      action.on("vertex-add", event => {
-        createPolygonGraphic(event);
-      });
-      action.on("vertex-remove", event => {
-        createPolygonGraphic(event);
-      });
+      //画线或面时需要对节点进行更新
+      if (drawType == "polyline" || drawType == "polygon") {
+        action.on("vertex-add", event => {
+          createGraphic(event);
+        });
+        action.on("vertex-remove", event => {
+          createGraphic(event);
+        });
+      }
+
       action.on("cursor-update", event => {
-        createPolygonGraphic(event);
-      });
-      action.on("draw-complete", event => {
-        createPolygonGraphic(event);
+        createGraphic(event);
       });
 
-      let createPolygonGraphic = (event: DrawEvent) => {
+      action.on("draw-complete", event => {
+        createGraphic(event);
+      });
+
+      let createGraphic = (event: DrawEvent) => {
         const vertices: number[][] = event.vertices;
         //清除临时graphic
         this.mapView.graphics.removeAll();
 
         let geometry: object;
+        let symbol: object;
         switch (drawType) {
+          case "point":
+            geometry = {
+              type: "point",
+              x: event.coordinates[0],
+              y: event.coordinates[1],
+              spatialReference: this.mapView.spatialReference
+            };
+            symbol = {
+              type: "simple-marker",
+              style: "square",
+              color: "red",
+              size: "16px",
+              outline: {
+                color: [255, 255, 0],
+                width: 3
+              }
+            };
+            break;
+
           case "polyline":
             geometry = {
               type: "polyline",
               paths: vertices,
               spatialReference: this.mapView.spatialReference
             };
+            symbol = {
+              type: "simple-line",
+              color: [4, 90, 141],
+              width: 4,
+              cap: "round",
+              join: "round"
+            };
             break;
 
           case "polygon":
             geometry = {
-              type: "polygon", // autocasts as Polygon
+              type: "polygon",
               rings: vertices,
               spatialReference: this.mapView.spatialReference
+            };
+            symbol = {
+              type: "simple-fill",
+              color: [178, 102, 234, 0.8],
+              style: "solid",
+              outline: {
+                type: "simple-line",
+                color: [4, 90, 141],
+                width: 4,
+                cap: "round",
+                join: "round"
+              }
             };
             break;
         }
 
         const graphic = new Graphic({
           geometry: geometry,
-          symbol: {
-            type: "simple-fill", // autocasts as SimpleFillSymbol
-            color: [178, 102, 234, 0.8],
-            style: "solid",
-            outline: {
-              type: "simple-line", // autocasts as new SimpleFillSymbol
-              color: [4, 90, 141],
-              width: 4,
-              cap: "round",
-              join: "round"
-            }
-          }
+          symbol: symbol
         });
 
         if (event.type === "draw-complete") {
@@ -165,12 +211,27 @@ export class Map {
             );
           }
 
+          let transformed;
           switch (drawType) {
+            case "point":
+              // const point: PointJson = resultGeometry.toJSON();
+              transformed = CoordTransform.transformPoint(
+                "gcj02",
+                "wgs84",
+                resultGeometry.toJSON()
+              );
+              resolve(transformed as PointJson);
+              break;
+
             case "polygon":
-              const polygon: PolygonJson = resultGeometry.toJSON();
+              // const polygon: PolygonJson = resultGeometry.toJSON();
               //纠偏, gcj02=>wgs84
-              const transformed = CoordTransform.transformPolygon("gcj02", "wgs84", polygon);
-              resolve(transformed);
+              transformed = CoordTransform.transformPolygon(
+                "gcj02",
+                "wgs84",
+                resultGeometry.toJSON()
+              );
+              resolve(transformed as PolygonJson);
               break;
           }
         } else {

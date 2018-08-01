@@ -1,9 +1,7 @@
 /// <amd-dependency path="esri/core/tsSupport/declareExtendsHelper" name="__extends" />
 /// <amd-dependency path="esri/core/tsSupport/decorateHelper" name="__decorate" />
 
-import Polygon = require("esri/geometry/Polygon");
-import { PolygonJson } from "../map/map";
-import { isNumber } from "util";
+import { PointJson, PolygonJson } from "../map/map";
 
 /**
  * 坐标系转换
@@ -13,7 +11,7 @@ import { isNumber } from "util";
  * WGS84: 天地图, 国外谷歌
  * */
 export class CoordTransform {
-  static readonly x_pi = Math.PI * 3000.0 / 180.0;
+  static readonly x_pi = (Math.PI * 3000.0) / 180.0;
   static readonly a = 6378245.0; //长半轴
   static readonly ee = 0.00669342162296594323; //偏心率平方
 
@@ -68,13 +66,15 @@ export class CoordTransform {
     } else {
       let dLat = this.transformLat([lng - 105.0, lat - 35.0]);
       let dLng = this.transformLong([lng - 105.0, lat - 35.0]);
-      const radLat = lat / 180.0 * Math.PI;
+      const radLat = (lat / 180.0) * Math.PI;
       let magic = Math.sin(radLat);
       magic = 1 - this.ee * magic * magic;
       const sqrtMagic = Math.sqrt(magic);
       dLat =
-        dLat * 180.0 / (this.a * (1 - this.ee) / (magic * sqrtMagic) * Math.PI);
-      dLng = dLng * 180.0 / (this.a / sqrtMagic * Math.cos(radLat) * Math.PI);
+        (dLat * 180.0) /
+        (((this.a * (1 - this.ee)) / (magic * sqrtMagic)) * Math.PI);
+      dLng =
+        (dLng * 180.0) / ((this.a / sqrtMagic) * Math.cos(radLat) * Math.PI);
       let mgLat = lat + dLat;
       let mgLng = lng + dLng;
       return [lng * 2 - mgLng, lat * 2 - mgLat];
@@ -95,13 +95,15 @@ export class CoordTransform {
     } else {
       let dLat = this.transformLat([lng - 105.0, lat - 35.0]);
       let dLong = this.transformLong([lng - 105.0, lat - 35.0]);
-      const radLat = lat / 180.0 * Math.PI;
+      const radLat = (lat / 180.0) * Math.PI;
       let magic = Math.sin(radLat);
       magic = 1 - this.ee * magic * magic;
       const sqrtMagic = Math.sqrt(magic);
       dLat =
-        dLat * 180.0 / (this.a * (1 - this.ee) / (magic * sqrtMagic) * Math.PI);
-      dLong = dLong * 180.0 / (this.a / sqrtMagic * Math.cos(radLat) * Math.PI);
+        (dLat * 180.0) /
+        (((this.a * (1 - this.ee)) / (magic * sqrtMagic)) * Math.PI);
+      dLong =
+        (dLong * 180.0) / ((this.a / sqrtMagic) * Math.cos(radLat) * Math.PI);
       const mgLat = lat + dLat;
       const mgLong = lng + dLong;
       return [mgLong, mgLat];
@@ -109,12 +111,34 @@ export class CoordTransform {
   }
 
   /**
-   * 转换esri json格式的polyline坐标
+   * 转换esri json格式的point坐标
    * @param {string} from - 初始坐标系
    * @param {string} to - 目标坐标系
-   * @param {Object} geometry - 要转换的polyline对象
+   * @param {PointJson} geometry - 要转换的point对象(esri json)
+   * @return {PointJson} 坐标转换完成后的Point对象
    * */
-  public static transformLine(from: string, to: string, geometry: object) {}
+  public static transformPoint(
+    from: string,
+    to: string,
+    geometry: PointJson
+  ): PointJson {
+    from = from.toLowerCase();
+    to = to.toLowerCase();
+    let newCoord: Array<number>;
+
+    if (from == "gcj02" && to == "wgs84") {
+      newCoord = this.gcj02ToWgs84([geometry.x, geometry.y]);
+    }
+    else if (from == "wgs84" && to == "gcj02") {
+      newCoord = this.wgs84ToGcj02([geometry.x, geometry.y]);
+    }
+
+    return {
+      spatialReference: geometry.spatialReference,
+      x: newCoord[0],
+      y: newCoord[1]
+    };
+  }
 
   /**
    * 转换Polygon坐标
@@ -128,6 +152,9 @@ export class CoordTransform {
     to: string,
     polygon: PolygonJson
   ): PolygonJson {
+    from = from.toLowerCase();
+    to = to.toLowerCase();
+
     let transformed: PolygonJson = {
       spatialReference: polygon.spatialReference,
       rings: []
@@ -135,12 +162,9 @@ export class CoordTransform {
     let newRing: Array<Array<number>> = [];
     for (let ring of polygon.rings) {
       for (let point of ring) {
-        if (from.toLowerCase() == "gcj02" && to.toLowerCase() == "wgs84") {
+        if (from == "gcj02" && to == "wgs84") {
           newRing.push(this.gcj02ToWgs84([point[0], point[1]]));
-        } else if (
-          from.toLowerCase() == "wgs84" &&
-          to.toLowerCase() == "gcj02"
-        ) {
+        } else if (from == "wgs84" && to == "gcj02") {
           newRing.push(this.wgs84ToGcj02([point[0], point[1]]));
         }
       }
@@ -160,18 +184,19 @@ export class CoordTransform {
       0.1 * lng * lat +
       0.1 * Math.sqrt(Math.abs(lng));
     ret +=
-      (20.0 * Math.sin(6.0 * lng * Math.PI) +
+      ((20.0 * Math.sin(6.0 * lng * Math.PI) +
         20.0 * Math.sin(2.0 * lng * Math.PI)) *
-      2.0 /
+        2.0) /
       3.0;
     ret +=
-      (20.0 * Math.sin(lng * Math.PI) + 40.0 * Math.sin(lng / 3.0 * Math.PI)) *
-      2.0 /
+      ((20.0 * Math.sin(lng * Math.PI) +
+        40.0 * Math.sin((lng / 3.0) * Math.PI)) *
+        2.0) /
       3.0;
     ret +=
-      (150.0 * Math.sin(lng / 12.0 * Math.PI) +
-        300.0 * Math.sin(lng / 30.0 * Math.PI)) *
-      2.0 /
+      ((150.0 * Math.sin((lng / 12.0) * Math.PI) +
+        300.0 * Math.sin((lng / 30.0) * Math.PI)) *
+        2.0) /
       3.0;
     return ret;
   }
@@ -187,18 +212,19 @@ export class CoordTransform {
       0.1 * lng * lat +
       0.2 * Math.sqrt(Math.abs(lng));
     ret +=
-      (20.0 * Math.sin(6.0 * lng * Math.PI) +
+      ((20.0 * Math.sin(6.0 * lng * Math.PI) +
         20.0 * Math.sin(2.0 * lng * Math.PI)) *
-      2.0 /
+        2.0) /
       3.0;
     ret +=
-      (20.0 * Math.sin(lat * Math.PI) + 40.0 * Math.sin(lat / 3.0 * Math.PI)) *
-      2.0 /
+      ((20.0 * Math.sin(lat * Math.PI) +
+        40.0 * Math.sin((lat / 3.0) * Math.PI)) *
+        2.0) /
       3.0;
     ret +=
-      (160.0 * Math.sin(lat / 12.0 * Math.PI) +
-        320 * Math.sin(lat * Math.PI / 30.0)) *
-      2.0 /
+      ((160.0 * Math.sin((lat / 12.0) * Math.PI) +
+        320 * Math.sin((lat * Math.PI) / 30.0)) *
+        2.0) /
       3.0;
     return ret;
   }

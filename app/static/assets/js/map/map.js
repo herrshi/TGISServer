@@ -50,36 +50,68 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
          *   polyline
          *   polygon
          *   circle
+         *   rectangle
+         *   ellipse
          * @return {Promise} - 返回绘制的Geometry
          * */
         startDraw(drawType) {
+            drawType = drawType.toLowerCase();
             return new Promise(resolve => {
                 const action = this.draw.create(drawType, {
                     mode: "click"
                 });
-                action.on("vertex-add", event => {
-                    createPolygonGraphic(event);
-                });
-                action.on("vertex-remove", event => {
-                    createPolygonGraphic(event);
-                });
+                //画线或面时需要对节点进行更新
+                if (drawType == "polyline" || drawType == "polygon") {
+                    action.on("vertex-add", event => {
+                        createGraphic(event);
+                    });
+                    action.on("vertex-remove", event => {
+                        createGraphic(event);
+                    });
+                }
                 action.on("cursor-update", event => {
-                    createPolygonGraphic(event);
+                    createGraphic(event);
                 });
                 action.on("draw-complete", event => {
-                    createPolygonGraphic(event);
+                    createGraphic(event);
                 });
-                let createPolygonGraphic = (event) => {
+                let createGraphic = (event) => {
                     const vertices = event.vertices;
                     //清除临时graphic
                     this.mapView.graphics.removeAll();
                     let geometry;
+                    let symbol;
                     switch (drawType) {
+                        case "point":
+                            geometry = {
+                                type: "point",
+                                x: event.coordinates[0],
+                                y: event.coordinates[1],
+                                spatialReference: this.mapView.spatialReference
+                            };
+                            symbol = {
+                                type: "simple-marker",
+                                style: "square",
+                                color: "red",
+                                size: "16px",
+                                outline: {
+                                    color: [255, 255, 0],
+                                    width: 3
+                                }
+                            };
+                            break;
                         case "polyline":
                             geometry = {
                                 type: "polyline",
                                 paths: vertices,
                                 spatialReference: this.mapView.spatialReference
+                            };
+                            symbol = {
+                                type: "simple-line",
+                                color: [4, 90, 141],
+                                width: 4,
+                                cap: "round",
+                                join: "round"
                             };
                             break;
                         case "polygon":
@@ -88,22 +120,23 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
                                 rings: vertices,
                                 spatialReference: this.mapView.spatialReference
                             };
+                            symbol = {
+                                type: "simple-fill",
+                                color: [178, 102, 234, 0.8],
+                                style: "solid",
+                                outline: {
+                                    type: "simple-line",
+                                    color: [4, 90, 141],
+                                    width: 4,
+                                    cap: "round",
+                                    join: "round"
+                                }
+                            };
                             break;
                     }
                     const graphic = new Graphic({
                         geometry: geometry,
-                        symbol: {
-                            type: "simple-fill",
-                            color: [178, 102, 234, 0.8],
-                            style: "solid",
-                            outline: {
-                                type: "simple-line",
-                                color: [4, 90, 141],
-                                width: 4,
-                                cap: "round",
-                                join: "round"
-                            }
-                        }
+                        symbol: symbol
                     });
                     if (event.type === "draw-complete") {
                         //绘制完成以后加入GraphicsLayer
@@ -114,11 +147,17 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
                         if (this.mapView.spatialReference.isWebMercator) {
                             resultGeometry = webMercatorUtils.webMercatorToGeographic(graphic.geometry);
                         }
+                        let transformed;
                         switch (drawType) {
+                            case "point":
+                                // const point: PointJson = resultGeometry.toJSON();
+                                transformed = coordTransform_1.CoordTransform.transformPoint("gcj02", "wgs84", resultGeometry.toJSON());
+                                resolve(transformed);
+                                break;
                             case "polygon":
-                                const polygon = resultGeometry.toJSON();
+                                // const polygon: PolygonJson = resultGeometry.toJSON();
                                 //纠偏, gcj02=>wgs84
-                                const transformed = coordTransform_1.CoordTransform.transformPolygon("gcj02", "wgs84", polygon);
+                                transformed = coordTransform_1.CoordTransform.transformPolygon("gcj02", "wgs84", resultGeometry.toJSON());
                                 resolve(transformed);
                                 break;
                         }
