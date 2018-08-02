@@ -53,12 +53,13 @@
               <p>用于定义路径的停靠点。至少需要两个点。</p>
               <p>简单结构: </p>
               <section class="panel">
-                <pre><code>x1,y1; x2,y2; ...; xn, yn</code></pre>
+                <pre><code>[[x1, y1], [x2, y2], ...; [xn, yn]]</code></pre>
               </section>
 
               <p>示例：</p>
               <section class="panel">
-                <pre><code><span class="blue-text">121.433</span>, <span class="blue-text">31.242</span>; <span class="blue-text">121.45</span>, <span class="blue-text">31.235</span></code></pre>
+                <pre><code>[[<span class="blue-text">121.433</span>, <span class="blue-text">31.242</span>], [<span
+                  class="blue-text">121.45</span>, <span class="blue-text">31.235</span>]]</code></pre>
 
               </section>
 
@@ -164,6 +165,14 @@
           <label for="txtStops">Stops:</label>
           <textarea type="text" id="txtStops" class="form-control" rows="4"
                     placeholder="请输入参数或点击新增按钮在地图上绘制，然后点击计算按钮"></textarea>
+
+          <!--Actions-->
+          <div class="md-form text-center btn-group d-flex justify-content-center">
+            <button id="btnAddStop" type="button" class="btn btn-default disabled">新 增</button>
+            <button id="btnCalculate" type="button" class="btn btn-default disabled">计 算</button>
+            <button id="btnClearData" type="button" class="btn btn-default disabled">清 除</button>
+            <button id="btnOpenLink" type="button" class="btn btn-default disabled">打开请求地址</button>
+          </div>
         </form>
       </div>
     </div>

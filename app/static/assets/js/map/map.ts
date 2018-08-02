@@ -47,6 +47,38 @@ export class Map {
   private mapView: MapView;
   private draw: Draw;
 
+  readonly defaultPointSymbol: object = {
+    type: "simple-marker",
+    style: "square",
+    color: "red",
+    size: "16px",
+    outline: {
+      color: [255, 255, 0],
+      width: 3
+    }
+  };
+
+  readonly defaultPolylineSymbol: object = {
+    type: "simple-line",
+    color: [4, 90, 141],
+    width: 4,
+    cap: "round",
+    join: "round"
+  };
+
+  readonly defaultPolygonSymbol: object = {
+    type: "simple-fill",
+    color: [178, 102, 234, 0.8],
+    style: "solid",
+    outline: {
+      type: "simple-line",
+      color: [4, 90, 141],
+      width: 4,
+      cap: "round",
+      join: "round"
+    }
+  };
+
   constructor(divName: string) {
     this.rootDiv = divName;
 
@@ -102,9 +134,11 @@ export class Map {
    *   circle
    *   rectangle
    *   ellipse
+   * @param {object} symbol - 绘制图标
+   *   可选, 不传使用默认图标
    * @return {Promise} - 返回绘制的Geometry
    * */
-  public startDraw(drawType: string): Promise<any> {
+  public startDraw(drawType: string, symbol?: object): Promise<any> {
     drawType = drawType.toLowerCase();
 
     return new Promise(resolve => {
@@ -131,30 +165,24 @@ export class Map {
       });
 
       let createGraphic = (event: DrawEvent) => {
+        //画点时有coordinates属性
+        const coordinates: number[] = event.coordinates;
+        //画线和面时有vertices属性
         const vertices: number[][] = event.vertices;
         //清除临时graphic
         this.mapView.graphics.removeAll();
 
-        let geometry: object;
-        let symbol: object;
+        let geometry: {};
+        let graphicSymbol: {};
         switch (drawType) {
           case "point":
             geometry = {
               type: "point",
-              x: event.coordinates[0],
-              y: event.coordinates[1],
+              x: coordinates[0],
+              y: coordinates[1],
               spatialReference: this.mapView.spatialReference
             };
-            symbol = {
-              type: "simple-marker",
-              style: "square",
-              color: "red",
-              size: "16px",
-              outline: {
-                color: [255, 255, 0],
-                width: 3
-              }
-            };
+            graphicSymbol = symbol ? symbol : this.defaultPointSymbol;
             break;
 
           case "polyline":
@@ -163,13 +191,7 @@ export class Map {
               paths: vertices,
               spatialReference: this.mapView.spatialReference
             };
-            symbol = {
-              type: "simple-line",
-              color: [4, 90, 141],
-              width: 4,
-              cap: "round",
-              join: "round"
-            };
+            graphicSymbol = symbol ? symbol : this.defaultPolylineSymbol;
             break;
 
           case "polygon":
@@ -178,24 +200,13 @@ export class Map {
               rings: vertices,
               spatialReference: this.mapView.spatialReference
             };
-            symbol = {
-              type: "simple-fill",
-              color: [178, 102, 234, 0.8],
-              style: "solid",
-              outline: {
-                type: "simple-line",
-                color: [4, 90, 141],
-                width: 4,
-                cap: "round",
-                join: "round"
-              }
-            };
+            graphicSymbol = symbol ? symbol : this.defaultPolygonSymbol;
             break;
         }
 
         const graphic = new Graphic({
           geometry: geometry,
-          symbol: symbol
+          symbol: graphicSymbol
         });
 
         if (event.type === "draw-complete") {
