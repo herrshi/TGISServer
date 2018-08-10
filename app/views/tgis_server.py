@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from app.scripts.tgis_server import lengths, areas
+from app.scripts.tgis_server import lengths, areas, routes
 
 tgis_server = Blueprint('tgis_server', __name__,
                         template_folder='templates',
@@ -41,4 +41,7 @@ def network_service():
 
 @tgis_server.route('/TGISServer/NetworkService/route')
 def network_service_route():
-    return render_template('server/network_service_route.html')
+    if not request.args:
+        return render_template('server/network_service_route.html')
+    else:
+        return routes(request.args)

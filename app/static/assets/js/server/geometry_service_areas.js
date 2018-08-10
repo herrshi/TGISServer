@@ -3,7 +3,7 @@ define(["require", "exports", "../map/map"], function (require, exports, map_1) 
     Object.defineProperty(exports, "__esModule", { value: true });
     const btnAddNewPolygon = $("#btnAddNewPolygon");
     const btnCalculate = $("#btnCalculate");
-    const btnClear = $("#btnClearData");
+    const btnClearData = $("#btnClearData");
     const btnOpenLink = $("#btnOpenLink");
     const txtPolygons = $("#txtPolygons");
     const txtRequest = $("#txtRequestUrl");
@@ -30,20 +30,20 @@ define(["require", "exports", "../map/map"], function (require, exports, map_1) 
             //计算按钮可用
             btnCalculate.removeClass("disabled");
             //清除按钮可用
-            btnClear.removeClass("disabled");
+            btnClearData.removeClass("disabled");
         });
     });
     btnCalculate.on("click", () => {
         getAreas();
     });
-    btnClear.on("click", () => {
+    btnClearData.on("click", () => {
         map.clearDraw();
         polygons = [];
         txtPolygons.val("");
         txtRequest.val("");
         txtResponse.val("");
         btnCalculate.addClass("disabled");
-        btnClear.addClass("disabled");
+        btnClearData.addClass("disabled");
         btnOpenLink.addClass("disabled");
     });
     btnOpenLink.on("click", () => {
