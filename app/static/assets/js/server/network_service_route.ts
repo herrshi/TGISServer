@@ -73,6 +73,8 @@ function getRoute() {
       return response.json();
     }).then(data => {
       txtResponse.val(JSON.stringify(data));
+
+      map.addOverlays(data);
     });
   }
 }

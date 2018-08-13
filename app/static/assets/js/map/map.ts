@@ -255,4 +255,11 @@ export class Map {
   public clearDraw() {
     this.drawLayer.removeAll();
   }
+
+  public addOverlays(params: any): Promise<void> {
+    return new Promise<void>(resolve => {
+
+      resolve();
+    });
+  }
 }

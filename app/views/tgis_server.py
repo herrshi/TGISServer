@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from app.scripts.tgis_server import lengths, areas, routes
+from app.scripts.tgis_server import lengths, areas, shortest_route
 
 tgis_server = Blueprint('tgis_server', __name__,
                         template_folder='templates',
@@ -44,4 +44,4 @@ def network_service_route():
     if not request.args:
         return render_template('server/network_service_route.html')
     else:
-        return routes(request.args)
+        return shortest_route(request.args)

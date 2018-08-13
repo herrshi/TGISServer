@@ -179,6 +179,11 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
         clearDraw() {
             this.drawLayer.removeAll();
         }
+        addOverlays(params) {
+            return new Promise(resolve => {
+                resolve();
+            });
+        }
     }
     exports.Map = Map;
 });

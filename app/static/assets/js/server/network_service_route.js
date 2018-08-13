@@ -64,6 +64,7 @@ define(["require", "exports", "../map/map"], function (require, exports, map_1) 
                 return response.json();
             }).then(data => {
                 txtResponse.val(JSON.stringify(data));
+                map.addOverlays(data);
             });
         }
     }
