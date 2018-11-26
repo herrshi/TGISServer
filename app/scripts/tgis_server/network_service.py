@@ -2,8 +2,9 @@ import json
 import osmnx as ox
 import networkx as nx
 
-
-graph = ox.graph_from_file("app/static/data/map.osm")
+print("start to load map")
+graph = ox.graph_from_file("app/static/data/map.osm", network_type="drive")
+print("load map finish")
 
 
 # networkx.shortest_path返回的是节点列表, 需要将节点间的路径查询出来

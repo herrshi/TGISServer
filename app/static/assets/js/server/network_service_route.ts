@@ -1,4 +1,4 @@
-import { Map, PointJson } from "../map/map";
+import { Map, PointJson, Overlay, OverlayParams } from "../map/map";
 
 const map = new Map("mapViewDiv");
 
@@ -49,6 +49,7 @@ btnCalculate.on("click", () => {
 
 btnClearData.on("click", () => {
   map.clearDraw();
+  map.deleteOverlays();
   stops = [];
   txtStops.val("");
   txtRequest.val("");
@@ -58,23 +59,44 @@ btnClearData.on("click", () => {
   btnOpenLink.addClass("disabled");
 });
 
+btnOpenLink.on("click", () => {
+  window.open(txtRequest.val() as string);
+});
+
 function getRoute() {
   const stops: string = (<string>txtStops.val()).trim();
   if (stops != "") {
     const requestParam = $.param({
       stops: stops
     });
-    const requestUrl = (<any>window).route.NETWORK_SERVICE_ROUTE + "?" + requestParam;
+    const requestUrl =
+      (<any>window).route.NETWORK_SERVICE_ROUTE + "?" + requestParam;
 
-    fetch(requestUrl).then(response => {
-      //显示rest地址
-      txtRequest.val(decodeURIComponent(response.url));
-      btnOpenLink.removeClass("disabled");
-      return response.json();
-    }).then(data => {
-      txtResponse.val(JSON.stringify(data));
+    fetch(requestUrl)
+      .then(response => {
+        //显示rest地址
+        txtRequest.val(decodeURIComponent(response.url));
+        btnOpenLink.removeClass("disabled");
+        return response.json();
+      })
+      .then(data => {
+        txtResponse.val(JSON.stringify(data));
 
-      map.addOverlays(data);
-    });
+        drawLines(data);
+      });
   }
+}
+
+function drawLines(data: Array<Array<number>>) {
+  const overlay: Overlay = {
+    geometry: {
+      type: "polyline",
+      paths: [data]
+    },
+    symbol: map.defaultPolylineSymbol
+  };
+  const params: OverlayParams = {
+    overlays: [overlay]
+  };
+  map.addOverlays(params).then(() => {});
 }

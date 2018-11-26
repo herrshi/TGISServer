@@ -1,7 +1,7 @@
 /// <amd-dependency path="esri/core/tsSupport/declareExtendsHelper" name="__extends" />
 /// <amd-dependency path="esri/core/tsSupport/decorateHelper" name="__decorate" />
 
-import { PointJson, PolygonJson } from "../map/map";
+import { PointJson, PolylineJson, PolygonJson } from "../map/map";
 
 /**
  * 坐标系转换
@@ -134,10 +134,43 @@ export class CoordTransform {
     }
 
     return {
+      type: "point",
       spatialReference: geometry.spatialReference,
       x: newCoord[0],
       y: newCoord[1]
     };
+  }
+
+  /**
+   * 转换Polygon坐标
+   * @param {string} from - 初始坐标系
+   * @param {string} to - 目标坐标系
+   * @param {PolylineJson} polyline - 要转换坐标的polyline对象(esri json)
+   * @return {PolylineJson} 坐标转换完成后的polyline对象
+   * */
+  public static transformPolyline(from: string, to: string, polyline: PolylineJson) {
+    from = from.toLowerCase();
+    to = to.toLowerCase();
+
+    let transformed: PolylineJson = {
+      type: "polyline",
+      spatialReference: polyline.spatialReference,
+      paths: []
+    };
+
+    for (let path of polyline.paths) {
+      let newPath: Array<Array<number>> = [];
+      for (let point of path) {
+        if (from == "gcj02" && to == "wgs84") {
+          newPath.push(this.gcj02ToWgs84([point[0], point[1]]))
+        }
+        else if (from == "wgs84" && to == "gcj02") {
+          newPath.push(this.wgs84ToGcj02([point[0], point[1]]))
+        }
+      }
+      transformed.paths.push(newPath);
+    }
+    return transformed;
   }
 
   /**
@@ -156,6 +189,7 @@ export class CoordTransform {
     to = to.toLowerCase();
 
     let transformed: PolygonJson = {
+      type: "polygon",
       spatialReference: polygon.spatialReference,
       rings: []
     };

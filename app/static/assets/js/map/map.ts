@@ -11,6 +11,7 @@ import Draw = require("esri/views/2d/draw/Draw");
 import Graphic = require("esri/Graphic");
 import webMercatorUtils = require("esri/geometry/support/webMercatorUtils");
 import Geometry = require("esri/geometry/Geometry");
+
 import esriConfig = require("esri/config");
 
 import { CoordTransform } from "../map/coordTransform";
@@ -26,28 +27,50 @@ export interface SpatialReferenceJson {
 }
 
 export interface PointJson {
+  //加入type，适应autocast参数
+  readonly type?: string;
   x: number;
   y: number;
-  spatialReference: SpatialReferenceJson;
+  readonly spatialReference?: SpatialReferenceJson;
 }
 
 export interface PolylineJson {
+  //加入type，适应autocast参数
+  readonly type?: string;
   paths: Array<Array<Array<number>>>;
-  spatialReference: SpatialReferenceJson;
+  readonly spatialReference?: SpatialReferenceJson;
 }
 
 export interface PolygonJson {
+  //加入type，适应autocast参数
+  readonly type?: string;
   rings: Array<Array<Array<number>>>;
-  spatialReference: SpatialReferenceJson;
+  readonly spatialReference?: SpatialReferenceJson;
+}
+
+export interface Overlay {
+  id?: string;
+  type?: string;
+  fields?: object;
+  geometry: object;
+  symbol?: object;
+}
+
+export interface OverlayParams {
+  overlays: Array<Overlay>;
+  defaultSymbol?: object;
 }
 
 export class Map {
   readonly rootDiv: string;
-  readonly drawLayer: GraphicsLayer = new GraphicsLayer();
   private mapView: MapView;
-  private draw: Draw;
 
-  readonly defaultPointSymbol: object = {
+  private draw: Draw;
+  readonly drawLayer: GraphicsLayer = new GraphicsLayer();
+
+  readonly overlayLayer: GraphicsLayer = new GraphicsLayer();
+
+  public readonly defaultPointSymbol: object = {
     type: "simple-marker",
     style: "square",
     color: "red",
@@ -58,7 +81,7 @@ export class Map {
     }
   };
 
-  readonly defaultPolylineSymbol: object = {
+  public readonly defaultPolylineSymbol: object = {
     type: "simple-line",
     color: [4, 90, 141],
     width: 4,
@@ -66,7 +89,7 @@ export class Map {
     join: "round"
   };
 
-  readonly defaultPolygonSymbol: object = {
+  public readonly defaultPolygonSymbol: object = {
     type: "simple-fill",
     color: [178, 102, 234, 0.8],
     style: "solid",
@@ -101,7 +124,7 @@ export class Map {
 
       const map = new EsriMap({
         basemap: basemap,
-        layers: [this.drawLayer]
+        layers: [this.drawLayer, this.overlayLayer]
       });
 
       this.mapView = new MapView({
@@ -172,8 +195,8 @@ export class Map {
         //清除临时graphic
         this.mapView.graphics.removeAll();
 
-        let geometry: {};
-        let graphicSymbol: {};
+        let geometry: object;
+        let graphicSymbol: object;
         switch (drawType) {
           case "point":
             geometry = {
@@ -256,10 +279,24 @@ export class Map {
     this.drawLayer.removeAll();
   }
 
-  public addOverlays(params: any): Promise<void> {
+  public addOverlays(params: OverlayParams): Promise<void> {
     return new Promise<void>(resolve => {
+      const overlays: Array<Overlay> = params.overlays;
+      const defaultSymbol: object = params.defaultSymbol;
+      overlays.forEach(overlay => {
+        let geometry = overlay.geometry;
+        const graphic: Graphic = new Graphic({
+          geometry: CoordTransform.transformPolyline( "wgs84", "gcj02", geometry as PolylineJson),
+          symbol: overlay.symbol || defaultSymbol
+        });
+        this.overlayLayer.add(graphic);
+      });
 
       resolve();
     });
+  }
+
+  public deleteOverlays() {
+    this.overlayLayer.removeAll();
   }
 }

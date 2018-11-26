@@ -6,6 +6,7 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
     class Map {
         constructor(divName) {
             this.drawLayer = new GraphicsLayer();
+            this.overlayLayer = new GraphicsLayer();
             this.defaultPointSymbol = {
                 type: "simple-marker",
                 style: "square",
@@ -52,7 +53,7 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
                 });
                 const map = new EsriMap({
                     basemap: basemap,
-                    layers: [this.drawLayer]
+                    layers: [this.drawLayer, this.overlayLayer]
                 });
                 this.mapView = new MapView({
                     container: this.rootDiv,
@@ -181,8 +182,21 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
         }
         addOverlays(params) {
             return new Promise(resolve => {
+                const overlays = params.overlays;
+                const defaultSymbol = params.defaultSymbol;
+                overlays.forEach(overlay => {
+                    let geometry = overlay.geometry;
+                    const graphic = new Graphic({
+                        geometry: coordTransform_1.CoordTransform.transformPolyline("wgs84", "gcj02", geometry),
+                        symbol: overlay.symbol || defaultSymbol
+                    });
+                    this.overlayLayer.add(graphic);
+                });
                 resolve();
             });
+        }
+        deleteOverlays() {
+            this.overlayLayer.removeAll();
         }
     }
     exports.Map = Map;

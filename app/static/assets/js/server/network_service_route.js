@@ -42,6 +42,7 @@ define(["require", "exports", "../map/map"], function (require, exports, map_1) 
     });
     btnClearData.on("click", () => {
         map.clearDraw();
+        map.deleteOverlays();
         stops = [];
         txtStops.val("");
         txtRequest.val("");
@@ -50,6 +51,9 @@ define(["require", "exports", "../map/map"], function (require, exports, map_1) 
         btnClearData.addClass("disabled");
         btnOpenLink.addClass("disabled");
     });
+    btnOpenLink.on("click", () => {
+        window.open(txtRequest.val());
+    });
     function getRoute() {
         const stops = txtStops.val().trim();
         if (stops != "") {
@@ -57,16 +61,31 @@ define(["require", "exports", "../map/map"], function (require, exports, map_1) 
                 stops: stops
             });
             const requestUrl = window.route.NETWORK_SERVICE_ROUTE + "?" + requestParam;
-            fetch(requestUrl).then(response => {
+            fetch(requestUrl)
+                .then(response => {
                 //显示rest地址
                 txtRequest.val(decodeURIComponent(response.url));
                 btnOpenLink.removeClass("disabled");
                 return response.json();
-            }).then(data => {
+            })
+                .then(data => {
                 txtResponse.val(JSON.stringify(data));
-                map.addOverlays(data);
+                drawLines(data);
             });
         }
+    }
+    function drawLines(data) {
+        const overlay = {
+            geometry: {
+                type: "polyline",
+                paths: [data]
+            },
+            symbol: map.defaultPolylineSymbol
+        };
+        const params = {
+            overlays: [overlay]
+        };
+        map.addOverlays(params).then(() => { });
     }
 });
 //# sourceMappingURL=network_service_route.js.map

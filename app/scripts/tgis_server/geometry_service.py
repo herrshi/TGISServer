@@ -11,6 +11,7 @@ def _get_geodesic_length(point1: list, point2: list) -> float:
     return distance
 
 
+# 校验点的数据格式
 def _validate_point(point) -> bool:
     if not isinstance(point, list):
         return False
@@ -22,6 +23,7 @@ def _validate_point(point) -> bool:
     return True
 
 
+# 校验线的数据格式
 def _validate_polyline(line) -> bool:
     if not isinstance(line, dict):
         return False
@@ -40,10 +42,11 @@ def _validate_polyline(line) -> bool:
     return True
 
 
+# 校验线的参数格式
 def _validate_lengths_param(params: dict) -> dict:
     calculation_type = params.get('calculationType') or 'geodesic'
     if calculation_type not in {'geodesic', 'planar'}:
-        return {'error': {'code': 400, 'message': 'calculationType参数错误'}}
+        return {'error': {'code': 400, 'message': 'calculationType参数错误', 'details': '值为geodesic或planar'}}
 
     lines_string = params.get('polylines')
     try:
@@ -52,18 +55,30 @@ def _validate_lengths_param(params: dict) -> dict:
         return {'error': {'code': 400, 'message': 'polylines参数错误', 'details': '非法json格式'}}
 
     if not isinstance(lines, list):
-        return {'error': {'code': 400, 'message': '参数错误', 'details': 'polylines必须为list'}}
+        return {'error': {'code': 400, 'message': 'polylines参数错误', 'details': 'polylines必须为list'}}
     elif len(lines) < 1:
-        return {'error': {'code': 400, 'message': '参数错误', 'details': 'polylines至少有一个元素'}}
+        return {'error': {'code': 400, 'message': 'polylines参数错误', 'details': 'polylines至少有一个元素'}}
 
     for line in lines:
         if not _validate_polyline(line):
-            return {'error': {'code': 400, 'message': '参数错误', 'details': 'polyline格式错误'}}
+            return {'error': {'code': 400, 'message': 'polylines参数错误', 'details': 'polyline格式错误'}}
 
     return {'result': 'success'}
 
 
 def lengths(params: dict) -> str:
+    """
+    计算折线长度
+    :param
+        params: 参数列表。包含参数
+            polylines: 线, esri json格式
+                参见https://developers.arcgis.com/documentation/common-data-types/geometry-objects.htm#POLYLINE
+            calculationType: 计算方式。geodesic(测地线长度)/planar(欧几里得长度)
+    :return
+        解析成功时，包含折线长度的json字符串，单位为米
+            '{'lengths': [1012.2, 884]}'
+        解析失败时，错误信息
+    """
     validate_result = _validate_lengths_param(params)
     if validate_result['result'] != 'success':
         return json.dumps(validate_result)
@@ -83,6 +98,7 @@ def lengths(params: dict) -> str:
                 i = 1
                 path_length = 0
                 while i < len(path):
+                    # 取相邻的两个点计算距离
                     point1 = path[i - 1]
                     point2 = path[i]
                     segment_length = _get_geodesic_length(point1, point2)
@@ -94,6 +110,7 @@ def lengths(params: dict) -> str:
         # 欧几里得长度
         elif calculation_type == 'planar':
             for path in paths:
+                # shapely中的线对象可直接获取到欧几里得长度
                 line = LineString(path)
                 path_length = line.length
                 lines_length.append(abs(path_length))
@@ -102,6 +119,7 @@ def lengths(params: dict) -> str:
     return json.dumps(result)
 
 
+# 计算周长和面积
 def areas(params: dict) -> str:
     geodesic = Geodesic.WGS84
     polygons_string = params.get('polygons')
